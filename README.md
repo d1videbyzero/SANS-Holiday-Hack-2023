@@ -459,7 +459,9 @@ Guess numbers 0 & 9
 9 19 29 39
 
 Divide each of these numbers by 4, and note those with the same remainder as above (3).
+
 19/4 = 4 with remainder of 3
+
 39/4 = 9 with remainder of 3
 
 Now put tension on each of these numbers (19, 39) and move the dial. The one which is more loose is the right one.
