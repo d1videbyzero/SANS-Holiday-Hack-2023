@@ -1,0 +1,44 @@
+import jwt
+from cryptography.hazmat.primitives import serialization
+
+# Payload for captains role.
+payload = {
+  "iss": "HHC 2023 Captain's Comms",
+  "iat": 1699485795.3403327,
+  "exp": 1809937395.3403327,
+  "aud": "Holiday Hack 2023",
+  "role": "GeeseIslandsSuperChiefCommunicationsOfficer"
+}
+
+# private_key = open('keys/capsPrivKey.key', 'r').read()
+private_key = b'''-----BEGIN PRIVATE KEY-----
+MIIEvgIBADANBgkqhkiG9w0BAQEFAASCBKgwggSkAgEAAoIBAQCwlm4slUHgR+1Q5A3UC7
+BXMnKvUxrjEWjoSwTOuSmudBx2DDPaIwzvogSIfwWWApkbVTRFTg3ey4jbg0mxvnAnfbsh
+hcC44sEvMg3rmdCEn3AE9HtZ3gSijbAk/abYcrCRblhp2PpPZiDBkuah3eqfomWE3TcM6T
+VuI24sPJZqj4w+aDZFzENHY9Gd8Fqu3PDQc8HXILZKnfd4MaSkhdpzH+UZUcVXETWm1c/5
+qw4DMrXAR7PIOPJTFlwwyZXRWJvN5dvGxdi9XeSdJyvZZg6pnmyxrhFqH2xaebQIobrfz+
+VUP2TBu9w7aUyVR5Onu/A5NcQbJp2kHRay4gq48fq5AgMBAAECggEATlcmYJQE6i2uvFS4
+R8q5vC1u0JYzVupJ2sgxRU7DDZiIadyHAm7LVeJQVYfYoBDeANC/hEGZCK7OM+heQMMGOZ
+bfdoNCmSNL5ha0M0IFTlj3VtNph9hlwQHP09FN/DeBWruT8L1oauIZhRcZR1VOuexPUm7b
+ddheMlL4lRp59qKj9k1hUQ3R3qAYST2EnqpEk1NV3TirnhIcAod53aAzcAqg/VruoPhdwm
+Sv/xrfDS9RDCxOzplHbVQ7sxZSt6URO/El6BrkvVvJEqECMUdON4agNEK5IYAFuIbETFNS
+u1TP/dMvnR1fpM0lPOXeUKPNFveGKCc7B4IF2aDQ/CvD+wKBgQDpJjHSbtABNaJqVJ3N/p
+MROk+UkTbSW69CgiH03TNJ9RflVMphwNfFJqwcWUwIEsBpe+Wa3xE0ZatecEM94PevvXGu
+jmfskst/PuCuDwHnQ5OkRwaGIkujmBaNFmpkF+51v6LNdnt8UPGrkovDonQIEjmvS1b53e
+UhDI91eysPKwKBgQDB5RVaS7huAJGJOgMpKzu54N6uljSwoiszYJRY+5V0h65PucmZHPHe
+4/+cSUuuhMWOPinr+tbZtwYaiX04CNK1s8u4qqcX2ZRDYuEv+WNDv2e1XjoWCTxfP71Eor
+ywkEyCnZq5kax3cPOqBs4UvSmsR9JiYKdeXfaCVGiUyJgLqwKBgQDL+VZtO/VOmZXWYOEO
+b0JLODCXUdQchYn3LdJ3X26XrY2SXXQRwZ0EJqk8xAL4rS8ZGgPuUmnC5Y/ft2eco00Ouz
+bR+FSDbIoMcP4wSYDoyv5IIrtabnauUUipdorttuIwsc/E4Xt3b3l/GV6dcWsCBK/i5I7b
+W34yQ8LejTtGsQKBgAmxNdwJpPJ6vMurRrUsIBQulXMMtx2NPbOXxFKeYN4uWhxKITWyKL
+UHmKNrVokmwelWWiodo9fGOlvhO40tg7rpfemBPlEG405rBu6q/LdKPhjm2Oh5Fbd9LCze
+Jah9zhVJY46bJY/i6Ys6Q9rticO+41lfk344HDZvmbq2PEN5AoGBANrYUVhKdTY0OmxLOr
+Bbkk8qpMhJycpmLFwymvFf0j3dWzwo8cY/+2zCFEtv6t1r7b8bjz/NYrwS0GvEc6BjxVa9
+JIGLTKZt+VRYMP1V+uJEmgSnwUFKrXPrAsyRaMcq0HAvQOMICX4ZvGyzWhutUdQXV73mNw
+nYl0RQmBnDOl+i
+-----END PRIVATE KEY-----
+'''
+
+encoded_jwt = jwt.encode(payload, private_key, algorithm="RS256")
+
+print(encoded_jwt)

