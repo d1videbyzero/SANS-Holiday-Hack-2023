@@ -2383,9 +2383,9 @@ reelObserver.observe(reelBtn, options);
 castObserver.observe(castBtn, options);
 ```
 
-All you need to do is paste this in your browser console (make sure you select the iframe in the console dropdown) and press enter. Now cast your line and watch as it fishes for you!
+All you need to do is paste this in your browser console (make sure you select the sailing iframe in the console dropdown) and press enter. Now cast your line and watch as it fishes for you!
 
-![auto fishing](images/fishing_mastery/auto_fishing.mov)
+![auto fishing](images/fishing_mastery/auto_fishing.gif)
 
 #### Heatmap
 
