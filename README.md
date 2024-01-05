@@ -178,7 +178,7 @@ This section mentions that a malicious actor could intercept HTTP request traffi
 
 #### Section 6 - Stored Cross-Site Scripting Vulnerabilities
 
-This section mentions that they used "Burp Suite\* to manipulate HTTP SEND". "HTTP SEND" is specific to the burp application, so this is slightly misleading and not true. What they should have said is that they used Burp Suite to manipulate the HTTP traffic. This is our second "hallucination".
+This section mentions that they used "Burp Suite" to manipulate "HTTP SEND". "HTTP SEND" is specific to the burp application, so this is slightly misleading and not true. What they should have said is that they used Burp Suite to manipulate the HTTP traffic. This is our second "hallucination".
 
 #### Section 9 - Internal IP Address Disclosure
 
@@ -309,7 +309,7 @@ Garland Candlesticks left an important pamphlet in his luggage, but he can't rem
 
 Chris Elgee did a talk on this explaining how to exploit these types of locks. Find it [here](https://www.youtube.com/watch?v=ycM1hBSEyog).
 
-Following Chris Elgee's talk; rotate wheel closest to open button and slowly increase tention until you get resistance. Once you get some resistance, go to next wheel and continue, increase tension, etc. At the end try to open (by clicking the lock in all the way). If the lock doesnt open, readjust some of the wheels and try again. It seems this challenge does not have a hard coded answer. Some of the different solutions I had were as follows: `8272, 0616`.
+Following Chris Elgee's talk; rotate wheel closest to open button and slowly increase tension until you get resistance. Once you get some resistance, go to the next wheel and continue, increase tension, etc. At the end try to open (by clicking the lock in all the way). If the lock doesnt open, readjust some of the wheels and try again. It seems this challenge does not have a hard coded answer. Some of the different solutions I had were as follows: `8272, 0616`.
 
 ## Linux PrivEsc
 
@@ -433,10 +433,12 @@ First reset the lock, give some tension and rotate dial. Find number that it sti
 
 ### Finding Guess Numbers
 
-Start at 0 and pull full tension. We are now looking to see that the limits of the dial with full tension are on either side of a whole number. For example, right away we see that at full tension on 0, the left limit of the dial is 39.5 and the right limit is 0.5. This is what we want to see, and our guess number is right in between that at 0. Now we will continue to do this all the way from 0-11. To move on, release just enough tension on the lock to go past the upper barrier and then re-apply full tension to the shackle. The guess number must always be a whole number so if you have dial limits of say 8 and 9, the guess number would be 8.5 which is invalid because its a fraction. You can skip these and continue on.
+Start at 0 and pull full tension. We are now looking to see what the limits of the dial with full tension are on either side of a whole number. For example, right away we see that at full tension on 0, the left limit of the dial is 39.5 and the right limit is 0.5. This is what we want to see, and our guess number is right in between that at 0. Now we will continue to do this all the way from 0-11. To move on, release just enough tension on the lock to go past the upper barrier and then re-apply full tension to the shackle. The guess number must always be a whole number so if you have dial limits of say 8 and 9, the guess number would be 8.5 which is invalid because its a fraction. You can skip these and continue on.
 
 Numbers found:
+
 39.5-0.5 --> 0
+
 8.5-9.5 --> 9
 
 ### The Math
@@ -451,7 +453,9 @@ First digit = sticky number + 5 = 14 + 5
 19 / 4 = 4 with remainder of 3
 
 Guess numbers 0 & 9
+
 0 10 20 30
+
 9 19 29 39
 
 Divide each of these numbers by 4, and note those with the same remainder as above (3).
