@@ -476,23 +476,33 @@ Now create a table of 2 rows. The first row starts with the number being the rem
 Our remainder from earlier = 3
 
 5 13 21 29 37
+
 9 17 25 33 1
 
 From the talk, we know that we can eliminate any of these numbers which are within 2 from 0. In our case only 1 is within 2 from 0, so we can eliminate that.
 
 5 13 21 29 37
+
 9 17 25 33 ~~1~~
 
 The last step is trying out these combos to find the right one.
 
 19-5-39 x
+
 19-9-39 x
+
 19-13-39 x
+
 19-17-39 x
+
 19-21-39 x
+
 19-25-39 x
+
 19-29-39 x
+
 19-33-39 x
+
 19-37-39 $$$$$$$
 
 My final combination ended up being `19-37-39`
