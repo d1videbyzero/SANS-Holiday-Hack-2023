@@ -523,7 +523,7 @@ Once loading into the game, we walk southwest and find a dog sitting next to the
 
 ![singing](images/game_cartridges/vol1/sing.png)
 
-Play and move the quares around by singing to see where they go.
+Play and move the squares around by singing to see where they go.
 
 The first block is right on the north edge of the QR code, and its correct position is right beside it. This is shown in the image above. The second block is just slightly southwest from this position and its correct position is in the northeast section of the QR code. The other five blocks are all in the southeast side of the QR code, as well as their correct positions. If you want to restart the challenge at any time, you can talk to the dog at the entrance.
 
@@ -557,10 +557,10 @@ Upon loading into the game, we go into a field and there is a guard standing at 
 
 Wanting to learn more, I took a look at the source code for the iframe. In there I found this piece of javascript.
 
-```
+```js
 // Load a ROM.
 (async function go() {
-  let ranNum = Math.round(Math.random()).toString()
+  let ranNum = Math.round(Math.random()).toString();
   let filename = ROM_FILENAME + ranNum + ".gb";
   console.log(filename);
   let response = await fetch(filename);
