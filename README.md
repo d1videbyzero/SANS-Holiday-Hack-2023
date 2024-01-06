@@ -2381,7 +2381,7 @@ If you inspect your browser network traffic with Burp or the dev tools, you will
 3. Set sail.
 4. Fish.
 
-Through some reverse engineering of the network logs from manually connecting, setting sail and fishing I made the script at `fishing_mastery/auto_rod.py`. If you want to run it, make sure you input your credentials first.
+Through some reverse engineering of the network logs from manually connecting, setting sail and fishing I made the script at [fishing_mastery/auto_rod.py](fishing_mastery/auto_rod.py). If you want to run it, make sure you input your credentials first.
 
 ![auto fishing with websocket](images/fishing_mastery/script_output.png)
 
@@ -2431,7 +2431,7 @@ All you need to do is paste this in your browser console (make sure you select t
 
 #### Heatmap
 
-If you fish for long enough, you will realize that you've caught a lot of fish but have not completed the challenge. This is because there is a secret heatmap of where each fish appear on the map with one in particular only appearing in one specific location. The following link can be found in the website source code in a comment mentioning its for development only.
+If you fish for long enough, you will realize that you've caught a lot of fish but have not completed the challenge. This is because there is a secret heatmap of where each fish appears on the map with one in particular only appearing in one specific location. The following link can be found in the website source code in a comment mentioning that its for development only.
 
 https://2023.holidayhackchallenge.com/sea/fishdensityref.html
 
@@ -2481,4 +2481,4 @@ Now you should see the heatmap on your minimap.
 
 If you want to put the heatmap for a different fish, just change out the URL in the code above for the correct heatmap image URL.
 
-With all this info, you should be able to catch everything!
+With all this info, you should be able to catch everything. Happy sailing!
