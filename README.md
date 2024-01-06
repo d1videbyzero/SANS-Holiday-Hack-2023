@@ -579,15 +579,15 @@ This seems to build a filename for which the rom is in and then print to the scr
 When you see this in the console, you can change the filepath of the URL to download both of these files.
 
 - https://gamegosling.com/vol2-akHB27gg6pN0/rom/game0.gb
-- https://gamegosling.com/vol2-akHB27gg6pN0/rom/game0.gb
+- https://gamegosling.com/vol2-akHB27gg6pN0/rom/game1.gb
 
 Next, we want to see the differences between these two roms. We can use `vbindiff` for that (thanks jfolkins). We will try to change diffs between the two ROMs and see what happens (tip: make backups of the originals).
 
 After experimenting changing a few diffs in vbindiff, we get the following results:
 
-- 3rd diff at `0001 6A80` in the 5th column changes the guards position (0B for top, 03 for bottom) This does help us get through though.
+- 3rd diff at `0001 6A80` in the 5th column changes the guards position (0B for top, 03 for bottom) This doesn't help us get through though.
 - 4th diff (0001 6AB0, column 9), didnt seem to do much.
-- 0001 7C80, column 1 (02 or 01). This removes the barrier (must stop you from going one way or the other?). Yep. This doesn't fix the guard stopping you when trying to cross, but it changes the direction the guard sends you in once he stops you. So changing the value of this for game0.gb from 02 to 01 will cause the guard to send us up when we try to cross instead of back down where we came from.
+- 0001 7C80, column 1 (02 or 01). This doesn't fix the guard stopping you when trying to cross, but it changes the direction the guard sends you in once he stops you. So changing the value of this for game0.gb from 02 to 01 will cause the guard to send us up when we try to cross instead of back down where we came from.
 
 ![vbindiff](images/game_cartridges/vol2/diff.png)
 
@@ -627,9 +627,9 @@ const ROM_FILENAME = "rom/game.gb";
 
 This shows that this game has only one ROM and its a static filename. We can download the ROM from the following url:
 
-`https://gamegosling.com/vol3-7bNwQKGBFNGQT1/rom/game.gb`
+https://gamegosling.com/vol3-7bNwQKGBFNGQT1/rom/game.gb
 
-Playing around with the game I figured out a couple things. First level is the only one with no enemies. There are 3 coins, valued at 1, 10, 100 which appear in order as you walk to the right. The next level has enemies and all coins are valued at 1. Next level is the same but with coins valued at 10. Next level is the same but all coins are valued at 100. The level after this has 2 enemies and a couple coins and a guy named jared... who says that people always say its the 5 nines, but really its the 3 nines. This is a reference to 999 coins as the target in this game. Once you get to 999 coins it says "unable to set 0xFE".
+Playing around with the game I figured out a couple things. First level is the only one with no enemies. There are 3 coins, valued at 1, 10, 100 which appear in order as you walk to the right. The next level has enemies and all coins are valued at 1. Next level is the same but with coins valued at 10. Next level is the same but all coins are valued at 100. The level after this has 2 enemies and a couple coins and a guy named jared... who says that "people always say its the 5 nines, but really its the 3 nines". This is a reference to 999 coins as the target in this game. Once you get to 999 coins it says "unable to set 0xFE".
 
 ![overflow](images/game_cartridges/vol3/overflow.png)
 
@@ -651,7 +651,7 @@ Flag: `!tom+elf!`
 
 ## Na'an
 
-Card game, can only tie pretty much as he uses the same hand every time. We cant input any number outside 0-9 and alphabetical characters dont work either. He mentioned the game is made with Python, and the hint says to use NaN. So thats what we will try.
+This is a card game. It seems the best we can do is tie, as he uses the same hand every time. We cant input any number outside 0-9 and alphabetical characters dont work either. He mentioned the game is made with Python, and the hint says to use NaN. So thats what we will try.
 
 Using the hand NaN, 1, 2, 8, 9 seems to win each time. Do this until you win the game.
 
@@ -671,6 +671,8 @@ Employees
 ```
 
 ### Onboarding
+
+#### How many Craftperson Elf's are working from laptops?
 
 ```
 Employees
@@ -773,7 +775,8 @@ C:\Windows\System32\powershell.exe -Nop -ExecutionPolicy bypass -enc W1N0UmlOZ10
 C:\Windows\System32\powershell.exe -Nop -ExecutionPolicy bypass -enc QzpcV2luZG93c1xTeXN0ZW0zMlxkb3dud2l0aHNhbnRhLmV4ZSAtLXdpcGVhbGwgXFxcXE5vcnRoUG9sZWZpbGVzaGFyZVxcYyQ=
 ```
 
-The arguments they each have seem to be base64. So we can use the base64 command to decode these (echo x | base64 -d)
+The arguments they each have seem to be base64. So we can use the base64 command to decode these (echo \<base64datahere\> | base64 -d).
+
 Here is the result:
 
 1.  `( 'txt.tsiLeciNythguaN\potkseD\:C txt.tsiLeciNythguaN\lacitirCnoissiM\$c\erahselifeloPhtroN\\ metI-ypoC c- exe.llehsrewop' -split '' | %{$_[0]}) -join ''`
@@ -873,8 +876,11 @@ Taking the first part of the hash "$krb5asrep" and looking in https://hashcat.ne
 Now lets see if we can use hashcat to crack it.
 
 `hashcat -m 18200 -a 0 -w 1 -u 1 --kernel-accel 1 --kernel-loops 1 hash.txt password_list.txt --force`
+
 -m is hash type (Kerberos 5, etype 23, AS-REP, which in hashcat is 18200).
+
 -a is attack mode (0 is wordlist).
+
 Added suggested flags from terminal (also needed to add --force).
 
 After running the command, we were successful!
@@ -989,7 +995,7 @@ Key notes that Alabaster tells us:
 
 ### Generate SSH Keypair
 
-Generate the SSH Keypair as you normally would (with `ssh-keygen`) and save in .ssh directory.
+Generate the SSH Keypair as you normally would (with `ssh-keygen`) and save in the .ssh directory.
 
 ### Get Certificate from WebApp
 
@@ -1216,13 +1222,13 @@ principal = data.get("principal", DEFAULT_PRINCIPAL)
 
 Knowing this, we can exploit it by sending in our own principal value, as long as we know the correct principal to use. Let's try and find what that is.
 
-Looking at the home directory on the vm, we can see the user alabaster. We need to figure out the principal name for alabaster's user. After some searching. There is a directory `/etc/ssh/auth_principals` with two files in it; `alabaster` and `monitor`. The `monitor` file has `elf` inside it and the `alabaster` file has `admin` inside it. "elf" was the principal that we we're automatically given when we generated our SSH certificate, so `admin` must be the correct principal for alabaster's account.
+Looking at the home directory on the vm, we can see the user alabaster. We need to figure out the principal name for alabaster's user. After some searching, I found a directory `/etc/ssh/auth_principals` with two files in it; `alabaster` and `monitor`. The `monitor` file has `elf` inside it and the `alabaster` file has `admin` inside it. "elf" was the principal that we we're automatically given when we generated our SSH certificate, so `admin` must be the correct principal for alabaster's account.
 
 Now we are going to try generating another ssh key pair and supplying the `"principal": "admin"` (seen in /etc/ssh/principals directory on server) to get a ssh certificate for alabasters account. We can edit the website code to do this in our browser. Lets try.
 
 Looking at the website source, we can see the following code in the `submitForm` function.
 
-```
+```js
 fetch(postUrl, {
   method: "POST",
   headers: {
@@ -1231,7 +1237,7 @@ fetch(postUrl, {
   body: JSON.stringify({
     ssh_pub_key: sshPubKey,
   }),
-})
+});
 ```
 
 Copy the entire submitForm function into a text file and add one line under `ssh_pub_key` to put our principal value in.
